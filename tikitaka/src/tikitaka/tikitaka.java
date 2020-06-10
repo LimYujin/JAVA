@@ -19,7 +19,7 @@ public class tikitaka {
 class Game{
 	//블럭이 있는 보드
 	
-	int[] block_order = new int[9];
+	int[] block_order = new int[9]; //처음 생성할 때만 쓰일 블럭 순서를 담은 배열
 	Block[] block;
 	int num_block; //남아있는 블럭 개수
 	Player player1;
@@ -116,6 +116,7 @@ class Player {
 			}
 		}
 	}
+	//생성자 : 처음 객체 생성 시 기본 셋팅
 	Player() { this.action_card = new ActionCard(); this.score = 0; }
 	
 }
@@ -123,16 +124,19 @@ class Player {
 class Block {
 	//블럭들
 	
-	String color = new String();
-	int order;
-	boolean exist;
+	String color = new String(); //블럭 색깔
+	int order; //블럭 순서(1~9)
+	boolean exist; //보드판에 남아있는지 확인
 	
 	Block() {}
-	//순서 랜덤으로 뽑고 객체 처음에 생성할 때 컬러만 넣어서 블럭들 생성하기
+	//두 번째 생성자: 객체 처음에 생성할 때 랜덤으로 돌린 순서랑 컬러만 넣어서 블럭들 생성하기
 	Block(String color, int order) { this.color = color; this.order = order; this.exist = true;	}
+	///GUI/// 색깔 매개변수로 넣으면 각 블록에 해당하는 이미지도 변수처럼 가지고 있게 할 수 있나?
 }
 
 class MissonCard {
+	//미션카드
+	
 	//자신의 미션 색깔
 	String first_color;
 	String second_color;
@@ -142,69 +146,186 @@ class MissonCard {
 	MissonCard() {
 		
 	}
+	
+	///GUI/// 얘도 세 가지 색깔 넣으면 그에 해당하는 이미지를 변수처럼 가지고 있게 할 수 있나?
 }
 
 class ActionCard {
 	//7개의 액션카드
 	int num_card; //남은 액션 카드 수
+	///GUI/// 화면 상에 남아 있는 카드 보이게끔
 	Block choose_block; //선택한 블럭 객체
+	
+	void next_turn() {
+		////다음 플레이어 순서로 넘어가기
+		///GUI///로도 어떤 플레이어 순서인지 표시해주기
+		
+	} 
 }
 
 class RemoveCard extends ActionCard {
 	//마지막 블록 버리기
 	
-	RemoveCard() { this.num_card = 2; } //처음에 존재하는 갯수
+	RemoveCard() { this.num_card = 2; } //처음에 주어진 카드 2개
 	
-	void removeCard(Block choose_block) {
+	void removeCard(Game game) {
 		//마지막 블록 버리기, 이때 choose에 game의 마지막 블럭 넣어줘야함
-		choose_block.exist = false;
-		num_card --; //해당 카드 갯수 -1
+		for(int i=0;i<game.num_block;i++)
+		{
+			if(game.block[i].order == game.num_block) //마지막블록인지 확인
+			{
+				choose_block.exist = false; //해당 블록 버려짐
+				this.num_card --; //해당 액션 카드 갯수 -1
+				///GUI///바뀐 블럭과 남아있는 액션카드 반영
+				this.next_turn(); //다음 플레이어로 넘어가기
+			}
+		}
 	}
 	
-	boolean possible() { return true; } //가능한 조건인지 확인 후 리턴 //얘는 항상 true
-	
+	boolean possible() { 
+		//이 액션 카드 사용 가능한지 확인 후 리턴 
+		if(this.num_card > 0) //남아있는 카드인지 확인
+			return true; 
+		else return false;
+		//얘는 나머지 요소는 항상 true
+		} 
 }
 
 class DownCard extends ActionCard {
 	//선택한 블록 마지막으로 내리기
 	
-	DownCard() {this.num_card = 1; }
+	DownCard() {this.num_card = 1; } //처음에 주어진 카드 1개
 	
-	boolean possible() { return true; } //가능한 조건인지 확인 후 리턴 //얘는 항상 true
+	///GUI/// 이때 화면에서 클릭한 블럭이 Block형으로 choose_block 매개변수로 들어가게끔 할 수 있나?
+	void downCard(Game game, Block choose_block) {
+		//선택한 블록 마지막 순서로 바꾸기, 선택한 블록 매개변수로
+		int choose_block_order = choose_block.order;
+		for(int i=0;i<game.num_block;i++) {
+			//선택한 블록 아래 있는 것들 한 칸씩 위로
+			if(game.block[i].order > choose_block_order) {
+				game.block[i].order++;
+			}
+			//선택한 블록 맨 아래로
+			if(game.block[i].order == choose_block_order) {
+				game.block[i].order = game.num_block;
+			}
+		}
+		this.num_card --; //해당 액션 카드 갯수 -1
+		///GUI///바뀐 블럭과 남아있는 액션카드 반영
+		this.next_turn(); //다음 순서로 넘어가기
+	}
+	
+	boolean possible() { 
+		if(this.num_card > 0) //남아있는 카드인지 확인
+			return true; 
+		else return false; } //얘는 나머지 요소는 항상 true
 }
+
 class UpOne extends ActionCard {
 	//선택한 블록 위로 1칸 올리기
 	
-	UpOne() { this.num_card = 2; }
+	UpOne() { this.num_card = 2; } //처음에 주어진 카드 2개
+	
+	///GUI/// 이때 화면에서 클릭한 블럭이 Block형으로 choose_block 매개변수로 들어가게끔 할 수 있나?
+	void upOne(Game game, Block choose_block) {
+		//선택한 블록 위로 1칸 올리기
+		int choose_block_order = choose_block.order;
+		for(int i=0;i<game.num_block;i++) {
+			//선택한 블록 위의 블록 한 칸 아래로
+			if(game.block[i].order == choose_block_order+1) {
+				game.block[i].order--;
+			}
+			//선택한 블록 한칸 위로
+			if(game.block[i].order == choose_block_order) {
+				game.block[i].order++;
+			}
+		}
+		this.num_card --; //해당 액션 카드 갯수 -1
+		///GUI///바뀐 블럭과 남아있는 액션카드 반영
+		this.next_turn(); //다음 순서로 넘어가기
+	}
 	
 	boolean possible() {
-		if(choose_block.order > 0)
 		//가능한 조건인지 확인 후 리턴
+		if(this.num_card > 0) {
+			if(choose_block.order > 1) {
+			//선택 블록의 순서가 1보다 큰지
 			return true;
+			}
+			else return false;
+		}
 		else return false;
 	}
 }
 class UpTwo extends ActionCard {
 	//선택한 블록 위로 2칸 올리기
 	
-	UpTwo() { this.num_card = 1; }
+	UpTwo() { this.num_card = 1; } //처음에 주어진 카드 1개
 	
+	///GUI/// 이때 화면에서 클릭한 블럭이 Block형으로 choose_block 매개변수로 들어가게끔 할 수 있나?
+	void upTwo(Game game, Block choose_block) {
+		//선택한 블록 위로 2칸 올리기
+		int choose_block_order = choose_block.order;
+		for(int i=0;i<game.num_block;i++) {
+		//선택한 블록 위의 두 블록 한 칸씩 아래로
+			if(game.block[i].order == choose_block_order+1 | game.block[i].order == choose_block_order+2) {
+				game.block[i].order--;
+			}
+			//선택한 블록 2칸 위로
+			if(game.block[i].order == choose_block_order) {
+				game.block[i].order = game.block[i].order+2;
+			}
+		}
+		this.num_card --; //해당 액션 카드 갯수 -1
+		///GUI///바뀐 블럭과 남아있는 액션카드 반영
+		this.next_turn(); //다음 순서로 넘어가기
+	}
+		
 	boolean possible() {
-		if(choose_block.order > 1)
 		//가능한 조건인지 확인 후 리턴
+		if(this.num_card > 0) {
+			if(choose_block.order > 2) {
+			//선택 블록의 순서가 2보다 큰지
 			return true;
+			}
+			else return false;
+		}
 		else return false;
 	}
 }
 class UpThree extends ActionCard {
 	//선택한 블록 위로 3칸 올리기
 	
-	UpThree() { this.num_card = 1; }
+	UpThree() { this.num_card = 1; } //처음에 주어진 카드 1개
+	
+	///GUI/// 이때 화면에서 클릭한 블럭이 Block형으로 choose_block 매개변수로 들어가게끔 할 수 있나?
+	void upThree(Game game, Block choose_block) {
+		//선택한 블록 위로 3칸 올리기
+		int choose_block_order = choose_block.order;
+		for(int i=0;i<game.num_block;i++) {
+			//선택한 블록 위의 세 블록 한 칸씩 아래로
+			if(game.block[i].order >= choose_block_order+1 & game.block[i].order <= choose_block_order+3) {
+				game.block[i].order--;
+			}
+			//선택한 블록  3칸 위로
+			if(game.block[i].order == choose_block_order) {
+				game.block[i].order = game.block[i].order+3;
+			}
+		}
+		this.num_card --; //해당 액션 카드 갯수 -1
+		///GUI///바뀐 블럭과 남아있는 액션카드 반영
+		this.next_turn(); //다음 순서로 넘어가기
+	}
 	
 	boolean possible() {
-		if(choose_block.order > 2)
 		//가능한 조건인지 확인 후 리턴
+		if(this.num_card > 0) {
+			if(choose_block.order > 3) {
+			//선택 블록의 순서가 3보다 큰지
 			return true;
+			}
+			else return false;
+		}
 		else return false;
 	}
 }
