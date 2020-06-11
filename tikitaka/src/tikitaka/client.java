@@ -265,12 +265,12 @@ public class client extends JFrame implements ActionListener{
 		}
 	}
 	
-	class MyPlayer extends Thread implements KeyListener, ActionListener, MouseMotionListener, MouseListener {
+	class Sender extends Thread implements KeyListener, ActionListener, MouseMotionListener, MouseListener {
 		DataOutputStream dos;
 		Socket s;
 		String nickname;
 		
-		MyPlayer(Socket s, String nickname) {
+		Sender(Socket s, String nickname) {
 			this.s = s;
 			try{
 				dos = new DataOutputStream(this.s.getOutputStream());
@@ -296,12 +296,12 @@ public class client extends JFrame implements ActionListener{
 		//마우스입력
 	}//MyPlayer
 	
-	class OtherPlayer extends Thread {
+	class Receiver extends Thread {
 		Socket s;
 		DataInputStream dis;
 		DataOutputStream dos;
 
-		OtherPlayer(Socket s){
+		Receiver(Socket s){
 			this.s = s;
 			try{
 				dis = new DataInputStream(this.s.getInputStream());
