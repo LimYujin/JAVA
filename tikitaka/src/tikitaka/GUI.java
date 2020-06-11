@@ -18,36 +18,42 @@ import javax.swing.Timer;
 
 
 public class GUI extends JFrame {
+	//이미지 변수
 	private Image screenImage;
 	private Graphics screenGraphic;
 	
 	private Image background=new ImageIcon(Main.class.getResource("../images/fp_title.jpg")).getImage();//initialize background image
 	private JLabel menuBar=new JLabel(new ImageIcon(Main.class.getResource("../images/menuBar.png")));//initialize menu bar image
 	
-	private ImageIcon exitButtonEnteredImage=new ImageIcon(Main.class.getResource("../images/exitbuttonr.png"));
-	private ImageIcon exitButtonBasicImage=new ImageIcon(Main.class.getResource("../images/exitbutton.png"));
-	private JButton exitButton=new JButton(exitButtonBasicImage);
+	//exit button(화면 끄는 x 버튼)
+	//each button image has 2 state : running state(cursor 올린 상태), basic state
+	private ImageIcon exitButtonEnteredImage=new ImageIcon(Main.class.getResource("../images/exitbuttonr.png"));//store image of exitbutton running
+	private ImageIcon exitButtonBasicImage=new ImageIcon(Main.class.getResource("../images/exitbutton.png"));//storre image of exit button basic state
+	private JButton exitButton=new JButton(exitButtonBasicImage);//make exit button
 	
-	//start page
+	//IN start page
 	//buttons
-	private ImageIcon startButtonEnteredImage=new ImageIcon(Main.class.getResource("../images/startButtonr.png"));
-	private ImageIcon startButtonBasicImage=new ImageIcon(Main.class.getResource("../images/startButton.png"));
-	private ImageIcon quitButtonEnteredImage=new ImageIcon(Main.class.getResource("../images/quitButtonr.png"));
-	private ImageIcon quitButtonBasicImage=new ImageIcon(Main.class.getResource("../images/quitButton.png"));
-	private ImageIcon introductionButtonEnteredImage=new ImageIcon(Main.class.getResource("../images/introductionr.png"));
-	private ImageIcon introductionButtonBasicImage=new ImageIcon(Main.class.getResource("../images/introduction.png"));
-	private JButton startButton=new JButton(startButtonBasicImage);
-	private JButton quitButton=new JButton(quitButtonBasicImage);
-	private JButton introductionButton=new JButton(introductionButtonBasicImage);
+	//each button image has 2 state : running state(cursor 올린 상태), basic state
+	private ImageIcon startButtonEnteredImage=new ImageIcon(Main.class.getResource("../images/startButtonr.png"));//store image of startbutton running
+	private ImageIcon startButtonBasicImage=new ImageIcon(Main.class.getResource("../images/startButton.png"));//store image of startbutton basic state
+	private ImageIcon quitButtonEnteredImage=new ImageIcon(Main.class.getResource("../images/quitButtonr.png"));//store image of quitbutton running
+	private ImageIcon quitButtonBasicImage=new ImageIcon(Main.class.getResource("../images/quitButton.png"));//store image of quitbutton basic state
+	private ImageIcon introductionButtonEnteredImage=new ImageIcon(Main.class.getResource("../images/introductionr.png"));//store image of how_to_play running
+	private ImageIcon introductionButtonBasicImage=new ImageIcon(Main.class.getResource("../images/introduction.png"));//store image of how_to_play basic state
+	private JButton startButton=new JButton(startButtonBasicImage);//make start button
+	private JButton quitButton=new JButton(quitButtonBasicImage);//make quit button
+	private JButton introductionButton=new JButton(introductionButtonBasicImage);//make how_to_play button
 	
-	//go-back(return) button
+	//go-back(return) button(화면 뒤로 가기 버튼)
+	//each button image has 2 state : running state(cursor 올린 상태), basic state
 	private ImageIcon backButtonEnteredImage=new ImageIcon(Main.class.getResource("../images/backr.png"));
 	private ImageIcon backButtonBasicImage=new ImageIcon(Main.class.getResource("../images/back.png"));
-	private JButton backButton=new JButton(backButtonBasicImage);
+	private JButton backButton=new JButton(backButtonBasicImage);//make go_back button
 	
 	//GAME page
+	//..//
 	
-	
+	//used for location of cursor
 	private int mouseX, mouseY;
 	
 	private int i = 0;
@@ -65,7 +71,7 @@ public class GUI extends JFrame {
 		setLayout(null);
 		
 		//menu_Bar> exit button
-		exitButton.setBounds(1245,0,30,30);
+		exitButton.setBounds(1245,0,30,30);//location of exit button
 		exitButton.setBorderPainted(false);
 		exitButton.setContentAreaFilled(false);
 		exitButton.setFocusPainted(true);
@@ -87,6 +93,7 @@ public class GUI extends JFrame {
 			public void mousePressed(MouseEvent e) {
 				//Music buttonEnteredMusic=new Music("buttonPressedMusic.mp3",false);
 				//buttonEnteredMusic.start();
+				//이 부분은 원래 버튼 누르면 "딸칵" 소리 나고 끝내려고 .sleep 이용해서 delpay를 주려 했는데 소리 실패..
 				try {
 					Thread.sleep(1000);
 				} catch(InterruptedException ex) {
@@ -95,7 +102,7 @@ public class GUI extends JFrame {
 				System.exit(0);
 			}
 		});
-		add(exitButton);
+		add(exitButton);//button 생성!
 		
 		//start button
 		startButton.setBounds(240,500,250,75);
@@ -163,7 +170,7 @@ public class GUI extends JFrame {
 		});
 		add(quitButton);
 
-		//introduction button
+		//introduction button; how_to_play
 		introductionButton.setBounds(790,500,250,75);
 		introductionButton.setBorderPainted(false);
 		introductionButton.setContentAreaFilled(false);
@@ -188,12 +195,13 @@ public class GUI extends JFrame {
 				//buttonEnteredMusic.start();
 			
 				//how-to-play-game(instruction/introduction) page
+				//first page(title page)에 있던 버튼들이 없어져야 하니까 안보이게 .setVisible(false) 이용
 				startButton.setVisible(false);
 				quitButton.setVisible(false);
 				introductionButton.setVisible(false);
-				background=new ImageIcon(Main.class.getResource("../images/instructionBack.jpg")).getImage();
+				background=new ImageIcon(Main.class.getResource("../images/instructionBack.jpg")).getImage();//change used background
 				
-				//go-back button
+				//go-back button //to first_page
 				backButton.setBounds(1170,75,50,50);
 				backButton.setBorderPainted(false);
 				backButton.setContentAreaFilled(false);
@@ -216,15 +224,16 @@ public class GUI extends JFrame {
 					public void mousePressed(MouseEvent e) {
 						//Music buttonEnteredMusic=new Music("buttonPressedMusic.mp3",false);
 						//buttonEnteredMusic.start();
-						background=new ImageIcon(Main.class.getResource("../images/fp_title.jpg")).getImage();
+						background=new ImageIcon(Main.class.getResource("../images/fp_title.jpg")).getImage();//change background image
+						//다시 버튼 보이게
 						startButton.setVisible(true);
 						quitButton.setVisible(true);
 						introductionButton.setVisible(true);
-						backButton.setVisible(false);
+						backButton.setVisible(false);//first page에서는 뒤로가기 필요없으니까 없애기
 					}
 				});
 				add(backButton);
-				backButton.setVisible(true);
+				backButton.setVisible(true);//how_to_play 화면의 뒤로가기 버튼 보이게하기
 			}
 		});
 		add(introductionButton);
@@ -252,6 +261,7 @@ public class GUI extends JFrame {
 		Music introMusic=new Music("intromusic.mp3",true);
 		introMusic.start();
 		
+		//계속 반복하여 재생되게
 		Timer timer = new Timer(DELAY, new ActionListener() {
 			 @Override
 		     public void actionPerformed(ActionEvent e) {
