@@ -241,10 +241,10 @@ public class client extends JFrame implements ActionListener{
 		
 		try {
 			Socket s = new Socket(ip, port);
-			MyPlayer player1 = new MyPlayer(s);
-			OtherPlayer player2 = new OtherPlayer(s);
-			new Thread(player1).start();
-			new Thread(player2).start();
+			Sender sender = new Sender(s);
+			Receiver receiver = new Receiver(s);
+			new Thread(sender).start();
+			new Thread(receiver).start();
 			
 			
 		}catch(UnknownHostException uh) {
