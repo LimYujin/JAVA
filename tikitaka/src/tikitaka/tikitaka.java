@@ -207,12 +207,19 @@ class ActionCard extends Game {
 	int num_card; //남은 액션 카드 수
 	///GUI/// 화면 상에 남아 있는 카드 보이게끔
 	Block choose_block; //선택한 블럭 객체
+	UpOne upone;
+	UpTwo uptwo;
+	UpThree upthree;
+	RemoveCard remove;
+	DownCard down;
 	
-	UpOne upone = new UpOne();
-	UpTwo uptwo = new UpTwo();
-	UpThree upthree = new UpThree();
-	RemoveCard remove = new RemoveCard();
-	DownCard down = new DownCard();
+	void ActioinCard_init() {
+		upone = new UpOne();
+		uptwo = new UpTwo();
+		upthree = new UpThree();
+		remove = new RemoveCard();
+		down = new DownCard();
+	}
 	
 	void next_turn() {
 		//다음 플레이어 순서로 넘어가기
@@ -289,7 +296,7 @@ class UpOne extends ActionCard {
 	int num_thiscard;
 	
 	UpOne() { System.out.println("upone"); this.num_thiscard = 2; } //처음에 주어진 카드 2개
-	
+
 	///GUI/// 이때 화면에서 클릭한 블럭이 Block형으로 choose_block 매개변수로 들어가게끔 할 수 있나?
 	void upOne(Block choose_block) {
 		//선택한 블록 위로 1칸 올리기
