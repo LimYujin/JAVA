@@ -237,11 +237,12 @@ public class client extends JFrame implements ActionListener{
 	}
 	
 	public void game() {
-		String ip;
+		String ip = login.ip;
+		String id = login.id;
 		
 		try {
 			Socket s = new Socket(ip, port);
-			Sender sender = new Sender(s);
+			Sender sender = new Sender(s, id);
 			Receiver receiver = new Receiver(s);
 			new Thread(sender).start();
 			new Thread(receiver).start();
@@ -256,6 +257,7 @@ public class client extends JFrame implements ActionListener{
 	}
 	
 	public void actionPerformed(ActionEvent e) {
+		
 		if(e.getSource() == exitButton){ //종료버튼
 			int set;
 			set = JOptionPane.showConfirmDialog(null, "게임을 종료하시겠습니까?", "Exit", JOptionPane.OK_CANCEL_OPTION);
@@ -265,35 +267,33 @@ public class client extends JFrame implements ActionListener{
 		}
 	}
 	
-	class Sender extends Thread implements KeyListener, ActionListener, MouseMotionListener, MouseListener {
+	class Sender extends Thread implements ActionListener {
 		DataOutputStream dos;
 		Socket s;
-		String nickname;
+		String id;
 		
-		Sender(Socket s, String nickname) {
+		Sender(Socket s, String id) {
 			this.s = s;
 			try{
 				dos = new DataOutputStream(this.s.getOutputStream());
-				this.nickname = nickname;
+				this.id = id;
 			}catch(IOException io){}
 		}
 		
 		public void run(){
 			try{
-				dos.writeUTF(nickname); //닉네임을 넘겨줌
+				dos.writeUTF(id); //id를 넘겨줌
 			}catch(IOException io){}
 		}
-		/*
-		public void actionPerformed(ActionEvent e){
-			if(e.getSource() == button){ // '준비' 버튼을 누르면 15회 게임이 시작됨
-				try{
 
-				}catch(IOException io){}
-			}
+		public void actionPerformed(ActionEvent e) {
+			//보드판 안에 있는 버튼들에 대해서
+			/*
+			if(e.getSource() == Mission_button) {
+				
+			}*/
 		}
-		*/
-		
-		//마우스입력
+
 	}//MyPlayer
 	
 	class Receiver extends Thread {
@@ -311,7 +311,6 @@ public class client extends JFrame implements ActionListener{
 		
 		public void run() {
 			while(dis != null) {
-				
 			}
 		}
 	}
