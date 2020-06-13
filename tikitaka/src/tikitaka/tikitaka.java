@@ -12,11 +12,11 @@ import java.util.Random;
 
 public class tikitaka {
 
-	public static void main(String[] args) {
+	/*public static void main(String[] args) {
 		// TODO Auto-generated method stub
 		Game game = new Game();
 		game.game_init();
-	}
+	}*/
 
 }
 
@@ -208,6 +208,12 @@ class ActionCard extends Game {
 	///GUI/// 화면 상에 남아 있는 카드 보이게끔
 	Block choose_block; //선택한 블럭 객체
 	
+	UpOne upone = new UpOne();
+	UpTwo uptwo = new UpTwo();
+	UpThree upthree = new UpThree();
+	RemoveCard remove = new RemoveCard();
+	DownCard down = new DownCard();
+	
 	void next_turn() {
 		//다음 플레이어 순서로 넘어가기
 		///GUI///로도 어떤 플레이어 순서인지 표시해주기
@@ -218,8 +224,9 @@ class ActionCard extends Game {
 
 class RemoveCard extends ActionCard {
 	//마지막 블록 버리기
+	int num_thiscard;
 	
-	RemoveCard() { this.num_card = 2; } //처음에 주어진 카드 2개
+	RemoveCard() { this.num_thiscard = 2; } //처음에 주어진 카드 2개
 	
 	void removeCard() {
 		//마지막 블록 버리기, 이때 choose에 game의 마지막 블럭 넣어줘야함
@@ -229,6 +236,7 @@ class RemoveCard extends ActionCard {
 			{
 				choose_block.exist = false; //해당 블록 버려짐
 				this.num_card --; //해당 액션 카드 갯수 -1
+				num_thiscard--;
 				///GUI///바뀐 블럭과 남아있는 액션카드 반영
 				this.next_turn(); //다음 플레이어로 넘어가기
 			}
@@ -237,7 +245,7 @@ class RemoveCard extends ActionCard {
 	
 	boolean possible() { 
 		//이 액션 카드 사용 가능한지 확인 후 리턴 
-		if(this.num_card > 0) //남아있는 카드인지 확인
+		if(this.num_thiscard > 0) //남아있는 카드인지 확인
 			return true; 
 		else return false;
 		//얘는 나머지 요소는 항상 true
@@ -246,8 +254,9 @@ class RemoveCard extends ActionCard {
 
 class DownCard extends ActionCard {
 	//선택한 블록 마지막으로 내리기
+	int num_thiscard;
 	
-	DownCard() {this.num_card = 1; } //처음에 주어진 카드 1개
+	DownCard() {this.num_thiscard = 1; } //처음에 주어진 카드 1개
 	
 	///GUI/// 이때 화면에서 클릭한 블럭이 Block형으로 choose_block 매개변수로 들어가게끔 할 수 있나?
 	void downCard( Block choose_block) {
@@ -264,20 +273,22 @@ class DownCard extends ActionCard {
 			}
 		}
 		this.num_card --; //해당 액션 카드 갯수 -1
+		num_thiscard--;
 		///GUI///바뀐 블럭과 남아있는 액션카드 반영
 		this.next_turn(); //다음 순서로 넘어가기
 	}
 	
 	boolean possible() { 
-		if(this.num_card > 0) //남아있는 카드인지 확인
+		if(this.num_thiscard > 0) //남아있는 카드인지 확인
 			return true; 
 		else return false; } //얘는 나머지 요소는 항상 true
 }
 
 class UpOne extends ActionCard {
 	//선택한 블록 위로 1칸 올리기
+	int num_thiscard;
 	
-	UpOne() { this.num_card = 2; } //처음에 주어진 카드 2개
+	UpOne() { System.out.println("upone"); this.num_thiscard = 2; } //처음에 주어진 카드 2개
 	
 	///GUI/// 이때 화면에서 클릭한 블럭이 Block형으로 choose_block 매개변수로 들어가게끔 할 수 있나?
 	void upOne(Block choose_block) {
@@ -294,13 +305,14 @@ class UpOne extends ActionCard {
 			}
 		}
 		this.num_card --; //해당 액션 카드 갯수 -1
+		num_thiscard--;
 		///GUI///바뀐 블럭과 남아있는 액션카드 반영
 		this.next_turn(); //다음 순서로 넘어가기
 	}
 	
 	boolean possible() {
 		//가능한 조건인지 확인 후 리턴
-		if(this.num_card > 0) {
+		if(this.num_thiscard > 0) {
 			if(choose_block.order > 1) {
 			//선택 블록의 순서가 1보다 큰지
 			return true;
@@ -312,8 +324,9 @@ class UpOne extends ActionCard {
 }
 class UpTwo extends ActionCard {
 	//선택한 블록 위로 2칸 올리기
+	int num_thiscard;
 	
-	UpTwo() { this.num_card = 1; } //처음에 주어진 카드 1개
+	UpTwo() { this.num_thiscard = 1; } //처음에 주어진 카드 1개
 	
 	///GUI/// 이때 화면에서 클릭한 블럭이 Block형으로 choose_block 매개변수로 들어가게끔 할 수 있나?
 	void upTwo(Block choose_block) {
@@ -330,13 +343,14 @@ class UpTwo extends ActionCard {
 			}
 		}
 		this.num_card --; //해당 액션 카드 갯수 -1
+		num_thiscard--;
 		///GUI///바뀐 블럭과 남아있는 액션카드 반영
 		this.next_turn(); //다음 순서로 넘어가기
 	}
 		
 	boolean possible() {
 		//가능한 조건인지 확인 후 리턴
-		if(this.num_card > 0) {
+		if(this.num_thiscard > 0) {
 			if(choose_block.order > 2) {
 			//선택 블록의 순서가 2보다 큰지
 			return true;
@@ -348,8 +362,9 @@ class UpTwo extends ActionCard {
 }
 class UpThree extends ActionCard {
 	//선택한 블록 위로 3칸 올리기
+	int num_thiscard;
 	
-	UpThree() { this.num_card = 1; } //처음에 주어진 카드 1개
+	UpThree() { this.num_thiscard = 1; } //처음에 주어진 카드 1개
 	
 	///GUI/// 이때 화면에서 클릭한 블럭이 Block형으로 choose_block 매개변수로 들어가게끔 할 수 있나?
 	void upThree(Block choose_block) {
@@ -366,13 +381,14 @@ class UpThree extends ActionCard {
 			}
 		}
 		this.num_card --; //해당 액션 카드 갯수 -1
+		num_thiscard--;
 		///GUI///바뀐 블럭과 남아있는 액션카드 반영
 		this.next_turn(); //다음 순서로 넘어가기
 	}
 	
 	boolean possible() {
 		//가능한 조건인지 확인 후 리턴
-		if(this.num_card > 0) {
+		if(this.num_thiscard > 0) {
 			if(choose_block.order > 3) {
 			//선택 블록의 순서가 3보다 큰지
 			return true;
