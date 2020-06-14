@@ -15,12 +15,6 @@ import javax.swing.JButton;
 
 public class tikitaka {
 
-	/*public static void main(String[] args) {
-		// TODO Auto-generated method stub
-		Game game = new Game();
-		game.game_init();
-	}*/
-
 }
 
 class Game{
@@ -245,19 +239,21 @@ class RemoveCard extends ActionCard {
 	
 	RemoveCard() { this.num_thiscard = 2; } //처음에 주어진 카드 2개
 	
-	void function() {
+	void function(Game game) {
 		//마지막 블록 버리기, 이때 choose에 game의 마지막 블럭 넣어줘야함
 		for(int i=0;i<num_block;i++)
 		{
-			if(block[i].order == num_block) //마지막블록인지 확인
+			if(game.block[i].order == num_block+1) //마지막블록인지 확인
 			{
-				choose_block.exist = false; //해당 블록 버려짐
-				this.num_card --; //해당 액션 카드 갯수 -1
-				num_thiscard--;
+				game.block[i].exist = false; //해당 블록 버려짐
+				this.num_thiscard --; //해당 액션 카드 갯수 -1
+				num_card--; //전체 액션 카드 갯수 -1
 				///GUI///바뀐 블럭과 남아있는 액션카드 반영
 				this.next_turn(); //다음 플레이어로 넘어가기
+				game.num_block--;
 			}
 		}
+		System.out.println("/////");
 	}
 	
 	boolean possible() { 
@@ -285,12 +281,12 @@ class DownCard extends ActionCard {
 				block[i].order++;
 			}
 			//선택한 블록 맨 아래로
-			if(block[i].order == choose_block_order) {
+			else if(block[i].order == choose_block_order) {
 				block[i].order = num_block;
 			}
 		}
-		this.num_card --; //해당 액션 카드 갯수 -1
-		num_thiscard--;
+		this.num_thiscard --; //해당 액션 카드 갯수 -1
+		num_card--; //전체 액션 카드 갯수 -1
 		///GUI///바뀐 블럭과 남아있는 액션카드 반영
 		this.next_turn(); //다음 순서로 넘어가기
 	}
@@ -321,8 +317,8 @@ class UpOne extends ActionCard {
 				block[i].order++;
 			}
 		}
-		this.num_card --; //해당 액션 카드 갯수 -1
-		num_thiscard--;
+		this.num_thiscard --; //해당 액션 카드 갯수 -1
+		num_card--; //전체 액션 카드 갯수 -1
 		///GUI///바뀐 블럭과 남아있는 액션카드 반영
 		this.next_turn(); //다음 순서로 넘어가기
 	}
@@ -359,8 +355,8 @@ class UpTwo extends ActionCard {
 				block[i].order = block[i].order+2;
 			}
 		}
-		this.num_card --; //해당 액션 카드 갯수 -1
-		num_thiscard--;
+		this.num_thiscard --; //해당 액션 카드 갯수 -1
+		num_card--; //전체 액션 카드 갯수 -1
 		///GUI///바뀐 블럭과 남아있는 액션카드 반영
 		this.next_turn(); //다음 순서로 넘어가기
 	}
@@ -397,8 +393,8 @@ class UpThree extends ActionCard {
 				block[i].order = block[i].order+3;
 			}
 		}
-		this.num_card --; //해당 액션 카드 갯수 -1
-		num_thiscard--;
+		this.num_thiscard --; //해당 액션 카드 갯수 -1
+		num_card--; //전체 액션 카드 갯수 -1
 		///GUI///바뀐 블럭과 남아있는 액션카드 반영
 		this.next_turn(); //다음 순서로 넘어가기
 	}
