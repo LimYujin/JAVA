@@ -17,7 +17,7 @@ import javax.swing.JLabel;
 import javax.swing.Timer;
 
 
-public class GUI extends JFrame {
+public class GUI extends JFrame{
 	//이미지 변수
 	private Image screenImage;
 	private Graphics screenGraphic;
@@ -50,6 +50,41 @@ public class GUI extends JFrame {
 	private ImageIcon backButtonBasicImage=new ImageIcon(Main.class.getResource("../images/back.png"));
 	private JButton backButton=new JButton(backButtonBasicImage);//make go_back button
 	
+	//액션카드 버튼
+	private ImageIcon actioncardButtonBasicImage = new ImageIcon(Main.class.getResource("../images/actioncard.png")); 
+	private JButton actioncardButton =new JButton(actioncardButtonBasicImage);
+	private ImageIcon ac_UpOneButtonBasicImage = new ImageIcon(Main.class.getResource("../images/ac2.png")); 
+	private JButton ac_UpOneButton =new JButton(ac_UpOneButtonBasicImage);
+	private ImageIcon ac_UpTwoButtonBasicImage = new ImageIcon(Main.class.getResource("../images/ac3.png")); 
+	private JButton ac_UpTwoButton =new JButton(ac_UpTwoButtonBasicImage);
+	private ImageIcon ac_UpThreeButtonBasicImage = new ImageIcon(Main.class.getResource("../images/ac1.png")); 
+	private JButton ac_UpThreeButton =new JButton(ac_UpThreeButtonBasicImage);
+	private ImageIcon ac_DownButtonBasicImage = new ImageIcon(Main.class.getResource("../images/ac6.png")); 
+	private JButton ac_DownButton =new JButton(ac_DownButtonBasicImage);
+	private ImageIcon ac_RemoveButtonBasicImage = new ImageIcon(Main.class.getResource("../images/ac5.png")); 
+	private JButton ac_RemoveButton =new JButton(ac_RemoveButtonBasicImage);
+	
+	//블럭 버튼
+	private ImageIcon RedBlockButtonBasicImage = new ImageIcon(Main.class.getResource("../images/b1.png")); //red
+	private JButton redBlockButton =new JButton(RedBlockButtonBasicImage);
+	private ImageIcon orangeBlockButtonBasicImage = new ImageIcon(Main.class.getResource("../images/b2.png")); //orange
+	private JButton orangeBlockButton =new JButton(orangeBlockButtonBasicImage);
+	private ImageIcon block3ButtonBasicImage = new ImageIcon(Main.class.getResource("../images/b3.png")); //yellow
+	private JButton yellowBlockButton =new JButton(block3ButtonBasicImage);
+	private ImageIcon block4ButtonBasicImage = new ImageIcon(Main.class.getResource("../images/b4.png")); //green
+	private JButton greenBlockButton =new JButton(block4ButtonBasicImage);
+	private ImageIcon block5ButtonBasicImage = new ImageIcon(Main.class.getResource("../images/b5.png")); //sky
+	private JButton skyBlockButton =new JButton(block5ButtonBasicImage);
+	private ImageIcon block6ButtonBasicImage = new ImageIcon(Main.class.getResource("../images/b6.png")); //blue
+	private JButton blueBlockButton =new JButton(block6ButtonBasicImage);
+	private ImageIcon block7ButtonBasicImage = new ImageIcon(Main.class.getResource("../images/b7.png")); //purple
+	private JButton purpleBlockButton =new JButton(block7ButtonBasicImage);
+	private ImageIcon block8ButtonBasicImage = new ImageIcon(Main.class.getResource("../images/b8.png")); //pink
+	private JButton pinkBlockButton =new JButton(block8ButtonBasicImage);
+	private ImageIcon block9ButtonBasicImage = new ImageIcon(Main.class.getResource("../images/b9.png")); //gray
+	private JButton grayBlockButton =new JButton(block9ButtonBasicImage);
+	
+	
 	//GAME page
 	//..//
 	
@@ -59,7 +94,7 @@ public class GUI extends JFrame {
 	private int i = 0;
 	private final static int DELAY = 10000;
 	
-	public GUI() {
+	public GUI(Game game) {
 		setUndecorated(true);//not to show original menu bar
 		setTitle("TikiTaka Game");
 		setSize(Main.SCREEN_WIDTH, Main.SCREEN_HEIGHT);
@@ -133,9 +168,12 @@ public class GUI extends JFrame {
 				quitButton.setVisible(false);
 				introductionButton.setVisible(false);
 				background=new ImageIcon(Main.class.getResource("../images/mainBackground.png")).getImage();
+				openActioncardButton(game);
+				
 			}
 		});
 		add(startButton);
+		
 		
 		//quit button
 		quitButton.setBounds(515,500,250,75);
@@ -271,7 +309,7 @@ public class GUI extends JFrame {
 		});
 		timer.start();
 	}
-	
+
 	//JFrame을 상속받은 GUI 게임에서 가장 먼저 실행되는 METHOD
 	public void paint(Graphics g) {
 		screenImage=createImage(Main.SCREEN_WIDTH,Main.SCREEN_HEIGHT);
@@ -285,4 +323,324 @@ public class GUI extends JFrame {
 		paintComponents(g);//drawing jLabel 
 		repaint(); 
 	}
+	
+	void openActioncardButton(Game game) {
+		//actioncard button
+		actioncardButton.setBounds(500, 500, 300, 100);
+		actioncardButton.setBorderPainted(false);
+		actioncardButton.setContentAreaFilled(false);
+		actioncardButton.setFocusPainted(true);
+		actioncardButton.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mousePressed(MouseEvent e) {
+				//Music buttonEnteredMusic=new Music("buttonPressedMusic.mp3",false);
+				//buttonEnteredMusic.start();
+				
+				//open actioncard event
+				background=new ImageIcon(Main.class.getResource("../images/checkActioncard.png")).getImage();
+				actioncardButton.setVisible(false); //액션카드 open버튼 off
+				chooseCard(game); //현재 상황에 맞춰 남은 카드 버튼들 보여주기
+				
+			}
+		});
+		add(actioncardButton);
+	}
+	
+	void chooseCard(Game game) {
+		
+		if(game.current_player.action_card.upone.num_thiscard>0)
+			ac_UpOneButton(game);
+		
+		if(game.current_player.action_card.uptwo.num_thiscard>0)
+			ac_UpTwoButton(game);
+		
+		if(game.current_player.action_card.upthree.num_thiscard>0)
+			ac_UpThreeButton(game);
+		
+		if(game.current_player.action_card.down.num_thiscard>0)
+			ac_DownButton(game);
+		
+		if(game.current_player.action_card.remove.num_thiscard>0)
+			ac_RemoveButton(game);
+	}
+	
+	void chooseBlock(Game game) {
+		//액션카드 버튼들 안보이게끔
+		ac_UpOneButton.setVisible(false);
+		ac_UpTwoButton.setVisible(false);
+		ac_UpThreeButton.setVisible(false);
+		ac_DownButton.setVisible(false);
+		ac_RemoveButton.setVisible(false);
+		
+		////블럭버튼들
+		blockButton(game);
+		
+	}
+	
+	void blockButton(Game game) {
+		Block temp_block;
+		for(int i = 0; i<game.num_block; i++) {
+			if(game.block[i].order == 1) {
+				temp_block = game.block[i];
+				makeBlock(game, temp_block, 600, 500, 50, 50);
+			}else if(game.block[i].order == 2) {
+				temp_block = game.block[i];
+				makeBlock(game, temp_block, 600, 450, 50, 50);
+			}else if(game.block[i].order == 3) {
+				temp_block = game.block[i];
+				makeBlock(game, temp_block, 600, 400, 50, 50);
+			}else if(game.block[i].order == 4) {
+				temp_block = game.block[i];
+				makeBlock(game, temp_block, 600, 350, 50, 50);
+			}else if(game.block[i].order == 5) {
+				temp_block = game.block[i];
+				makeBlock(game, temp_block, 600, 300, 50, 50);
+			}else if(game.block[i].order == 6) {
+				temp_block = game.block[i];
+				makeBlock(game, temp_block, 600, 250, 50, 50);
+			}else if(game.block[i].order == 7) {
+				temp_block = game.block[i];
+				makeBlock(game, temp_block, 600, 200, 50, 50);
+			}else if(game.block[i].order == 8) {
+				temp_block = game.block[i];
+				makeBlock(game, temp_block, 600, 150, 50, 50);
+			}else if(game.block[i].order == 9) {
+				temp_block = game.block[i];
+				makeBlock(game, temp_block, 600, 100, 50, 50);
+			}
+		}
+	}
+	
+	void makeBlock(Game game, Block block, int a, int b, int c, int d) {
+		/*
+		if(block.color == "red") {
+			redBlockButton.setBounds(a, b, c, d);
+			redBlockButton.setBorderPainted(false);
+			redBlockButton.setContentAreaFilled(false);
+			redBlockButton.setFocusPainted(true);
+			redBlockButton.addMouseListener(new MouseAdapter() {
+				@Override
+				public void mousePressed(MouseEvent e) {
+					//매개변수 넘겨주기
+					game.current_player.action_card.choose_block = block;
+				}
+			});
+			add(redBlockButton);
+		}
+		else if(block.color == "orange") {
+			orangeBlockButton.setBounds(a, b, c, d);
+			orangeBlockButton.setBorderPainted(false);
+			orangeBlockButton.setContentAreaFilled(false);
+			orangeBlockButton.setFocusPainted(true);
+			orangeBlockButton.addMouseListener(new MouseAdapter() {
+				public void mousePressed(MouseEvent e) {
+					//매개변수 넘겨주기
+					game.current_player.action_card.choose_block = block;
+				}
+			});
+			add(orangeBlockButton);
+			
+		}else if(block.color == "yellow") {
+			yellowBlockButton.setBounds(a, b, c, d);
+			yellowBlockButton.setBorderPainted(false);
+			yellowBlockButton.setContentAreaFilled(false);
+			yellowBlockButton.setFocusPainted(true);
+			yellowBlockButton.addMouseListener(new MouseAdapter() {
+				@Override
+				public void mousePressed(MouseEvent e) {
+					//매개변수 넘겨주기
+					game.current_player.action_card.choose_block = block;
+				}
+			});
+			add(yellowBlockButton);
+			
+		}else if(block.color == "green") {
+			greenBlockButton.setBounds(a, b, c, d);
+			greenBlockButton.setBorderPainted(false);
+			greenBlockButton.setContentAreaFilled(false);
+			greenBlockButton.setFocusPainted(true);
+			greenBlockButton.addMouseListener(new MouseAdapter() {
+				@Override
+				public void mousePressed(MouseEvent e) {
+					//매개변수 넘겨주기
+					game.current_player.action_card.choose_block = block;
+				}
+			});
+			add(greenBlockButton);
+			
+		}else if(block.color == "sky") {
+			skyBlockButton.setBounds(a, b, c, d);
+			skyBlockButton.setBorderPainted(false);
+			skyBlockButton.setContentAreaFilled(false);
+			skyBlockButton.setFocusPainted(true);
+			skyBlockButton.addMouseListener(new MouseAdapter() {
+				@Override
+				public void mousePressed(MouseEvent e) {
+					//매개변수 넘겨주기
+					game.current_player.action_card.choose_block = block;
+				}
+			});
+			add(skyBlockButton);
+			
+		}else if(block.color == "blue") {
+			blueBlockButton.setBounds(a, b, c, d);
+			blueBlockButton.setBorderPainted(false);
+			blueBlockButton.setContentAreaFilled(false);
+			blueBlockButton.setFocusPainted(true);
+			blueBlockButton.addMouseListener(new MouseAdapter() {
+				@Override
+				public void mousePressed(MouseEvent e) {
+					//매개변수 넘겨주기
+					game.current_player.action_card.choose_block = block;
+				}
+			});
+			add(blueBlockButton);
+			
+		}else if(block.color == "purple") {
+			purpleBlockButton.setBounds(a, b, c, d);
+			purpleBlockButton.setBorderPainted(false);
+			purpleBlockButton.setContentAreaFilled(false);
+			purpleBlockButton.setFocusPainted(true);
+			purpleBlockButton.addMouseListener(new MouseAdapter() {
+				@Override
+				public void mousePressed(MouseEvent e) {
+					//매개변수 넘겨주기
+					game.current_player.action_card.choose_block = block;
+				}
+			});
+			add(purpleBlockButton);
+			
+		}else if(block.color == "pink") {
+			pinkBlockButton.setBounds(a, b, c, d);
+			pinkBlockButton.setBorderPainted(false);
+			pinkBlockButton.setContentAreaFilled(false);
+			pinkBlockButton.setFocusPainted(true);
+			pinkBlockButton.addMouseListener(new MouseAdapter() {
+				@Override
+				public void mousePressed(MouseEvent e) {
+					//매개변수 넘겨주기
+					game.current_player.action_card.choose_block = block;
+				}
+			});
+			add(pinkBlockButton);
+			
+		}else if(block.color == "gray") {
+			grayBlockButton.setBounds(a, b, c, d);
+			grayBlockButton.setBorderPainted(false);
+			grayBlockButton.setContentAreaFilled(false);
+			grayBlockButton.setFocusPainted(true);
+			grayBlockButton.addMouseListener(new MouseAdapter() {
+				@Override
+				public void mousePressed(MouseEvent e) {
+					//매개변수 넘겨주기
+					game.current_player.action_card.choose_block = block;
+				}
+			});
+			add(grayBlockButton);
+		}*/
+	}
+	void ac_UpOneButton(Game game) {
+		ac_UpOneButton.setBounds(300, 300, 200, 200);
+		ac_UpOneButton.setBorderPainted(false);
+		ac_UpOneButton.setContentAreaFilled(false);
+		ac_UpOneButton.setFocusPainted(true);
+		ac_UpOneButton.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mousePressed(MouseEvent e) {
+				//Music buttonEnteredMusic=new Music("buttonPressedMusic.mp3",false);
+				//buttonEnteredMusic.start();
+				
+				//choose a block
+				background=new ImageIcon(Main.class.getResource("../images/mainBackground.png")).getImage();
+				actioncardButton.setVisible(true); //다시 액션카드 open버튼 on
+				chooseBlock(game); //현재 상황에 맞춰 남은 블럭 버튼들 보여주기 
+				game.current_player.action_card.upone.function();
+				
+			}
+		});
+		add(ac_UpOneButton);
+	}
+	
+	void ac_UpTwoButton(Game game) {
+		ac_UpTwoButton.setBounds(400, 300, 200, 200);
+		ac_UpTwoButton.setBorderPainted(false);
+		ac_UpTwoButton.setContentAreaFilled(false);
+		ac_UpTwoButton.setFocusPainted(true);
+		ac_UpTwoButton.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mousePressed(MouseEvent e) {
+				//Music buttonEnteredMusic=new Music("buttonPressedMusic.mp3",false);
+				//buttonEnteredMusic.start();
+				
+				//choose a block
+				background=new ImageIcon(Main.class.getResource("../images/mainBackground.png")).getImage();
+				actioncardButton.setVisible(true); //다시 액션카드 open버튼 on
+				chooseBlock(game); //현재 상황에 맞춰 남은 블럭 버튼들 보여주기 
+				game.current_player.action_card.uptwo.function();
+				
+			}
+		});
+		add(ac_UpTwoButton);
+	}
+		
+	void ac_UpThreeButton(Game game) {
+		ac_UpThreeButton.setBounds(500, 300, 200, 200);
+		ac_UpThreeButton.setBorderPainted(false);
+		ac_UpThreeButton.setContentAreaFilled(false);
+		ac_UpThreeButton.setFocusPainted(true);
+		ac_UpThreeButton.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mousePressed(MouseEvent e) {
+				//Music buttonEnteredMusic=new Music("buttonPressedMusic.mp3",false);
+				//buttonEnteredMusic.start();
+				
+				//choose a block
+				background=new ImageIcon(Main.class.getResource("../images/mainBackground.png")).getImage();
+				actioncardButton.setVisible(true); //다시 액션카드 open버튼 on
+				chooseBlock(game); //현재 상황에 맞춰 남은 블럭 버튼들 보여주기 
+				game.current_player.action_card.upthree.function();
+		add(ac_UpThreeButton);
+	}
+	
+	void ac_DownButton(Game game) {
+		ac_DownButton.setBounds(600, 300, 200, 200);
+		ac_DownButton.setBorderPainted(false);
+		ac_DownButton.setContentAreaFilled(false);
+		ac_DownButton.setFocusPainted(true);
+		ac_DownButton.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mousePressed(MouseEvent e) {				
+				//choose a block
+				background=new ImageIcon(Main.class.getResource("../images/mainBackground.png")).getImage();
+				actioncardButton.setVisible(true); //다시 액션카드 open버튼 on
+				chooseBlock(game); //현재 상황에 맞춰 남은 블럭 버튼들 보여주기 
+				game.current_player.action_card.down.function();
+			}
+		});
+		add(ac_DownButton);
+	}
+	
+	void ac_RemoveButton(Game game) {
+		ac_RemoveButton.setBounds(700, 300, 200, 200);
+		ac_RemoveButton.setBorderPainted(false);
+		ac_RemoveButton.setContentAreaFilled(false);
+		ac_RemoveButton.setFocusPainted(true);
+		ac_RemoveButton.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mousePressed(MouseEvent e) {
+				//Music buttonEnteredMusic=new Music("buttonPressedMusic.mp3",false);
+				//buttonEnteredMusic.start();
+				
+				//choose a block
+				background=new ImageIcon(Main.class.getResource("../images/mainBackground.png")).getImage();
+				actioncardButton.setVisible(true); //다시 액션카드 open버튼 on
+				chooseBlock(game); //현재 상황에 맞춰 남은 블럭 버튼들 보여주기 
+				game.current_player.action_card.remove.function();
+				
+			}
+		});
+		add(ac_RemoveButton);
+	}
+	
+	
 }
