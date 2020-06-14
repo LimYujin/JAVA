@@ -51,14 +51,14 @@ class Game{
 		//block 9개에 정보 넣어주기 각 블럭은 색상, 순서 정보를 가지고 있음
 		this.block = new Block[9];
 		this.block[0] = new Block("red", block_order[0]);
-		this.block[1] = new Block("orange", block_order[0]);
-		this.block[2] = new Block("yellow", block_order[0]);
-		this.block[7] = new Block("green", block_order[0]);
-		this.block[3] = new Block("sky", block_order[0]);
-		this.block[4] = new Block("blue", block_order[0]);
-		this.block[5] = new Block("purple", block_order[0]);
-		this.block[6] = new Block("pink", block_order[0]);
-		this.block[8] = new Block("gray", block_order[0]);
+		this.block[1] = new Block("orange", block_order[1]);
+		this.block[2] = new Block("yellow", block_order[2]);
+		this.block[7] = new Block("green", block_order[3]);
+		this.block[3] = new Block("sky", block_order[4]);
+		this.block[4] = new Block("blue", block_order[5]);
+		this.block[5] = new Block("purple", block_order[6]);
+		this.block[6] = new Block("pink", block_order[7]);
+		this.block[8] = new Block("gray", block_order[8]);
 		
 		//player 2명 생성
 		this.player1 = new Player();

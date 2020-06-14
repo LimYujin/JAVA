@@ -50,7 +50,7 @@ public class GUI extends JFrame{
 	private ImageIcon backButtonBasicImage=new ImageIcon(Main.class.getResource("../images/back.png"));
 	private JButton backButton=new JButton(backButtonBasicImage);//make go_back button
 	
-	//액션카드 버튼
+	//액션카드 버튼 이미지
 	private ImageIcon actioncardButtonBasicImage = new ImageIcon(Main.class.getResource("../images/actioncard.png")); 
 	private JButton actioncardButton =new JButton(actioncardButtonBasicImage);
 	private ImageIcon ac_UpOneButtonBasicImage = new ImageIcon(Main.class.getResource("../images/ac2.png")); 
@@ -64,7 +64,7 @@ public class GUI extends JFrame{
 	private ImageIcon ac_RemoveButtonBasicImage = new ImageIcon(Main.class.getResource("../images/ac5.png")); 
 	private JButton ac_RemoveButton =new JButton(ac_RemoveButtonBasicImage);
 	
-	//블럭 버튼
+	//색깔 블럭 버튼 이미지
 	private ImageIcon RedBlockButtonBasicImage = new ImageIcon(Main.class.getResource("../images/b1.png")); //red
 	private JButton redBlockButton =new JButton(RedBlockButtonBasicImage);
 	private ImageIcon orangeBlockButtonBasicImage = new ImageIcon(Main.class.getResource("../images/b2.png")); //orange
@@ -168,7 +168,7 @@ public class GUI extends JFrame{
 				quitButton.setVisible(false);
 				introductionButton.setVisible(false);
 				background=new ImageIcon(Main.class.getResource("../images/mainBackground.png")).getImage();
-				openActioncardButton(game);
+				openActioncardButton(game); //유진: 스타트 누르면 액션카드 표지 나오도록 한 것! 누르면 카드 선택하는거 뜸
 				
 			}
 		});
@@ -324,9 +324,10 @@ public class GUI extends JFrame{
 		repaint(); 
 	}
 	
+	//유진: 스타트 누르면 액션카드 표지 나오도록 한 것! 누르면 카드 선택하는거 뜸
 	void openActioncardButton(Game game) {
 		//actioncard button
-		actioncardButton.setBounds(500, 500, 300, 100);
+		actioncardButton.setBounds(500, 500, 300, 100); //유진: 이거 위치 수정 부탁!
 		actioncardButton.setBorderPainted(false);
 		actioncardButton.setContentAreaFilled(false);
 		actioncardButton.setFocusPainted(true);
@@ -337,19 +338,19 @@ public class GUI extends JFrame{
 				//buttonEnteredMusic.start();
 				
 				//open actioncard event
-				background=new ImageIcon(Main.class.getResource("../images/checkActioncard.png")).getImage();
-				actioncardButton.setVisible(false); //액션카드 open버튼 off
-				chooseCard(game); //현재 상황에 맞춰 남은 카드 버튼들 보여주기
-				
+				background=new ImageIcon(Main.class.getResource("../images/checkActioncard.png")).getImage(); //액션카드 목록 보이도록! 배경 사진 변경 부탁!
+				actioncardButton.setVisible(false); //액션카드 open하는버튼 off
+				chooseCard(game); //유진: current_player의 남은 카드들 버튼으로 보여주기
 			}
 		});
 		add(actioncardButton);
 	}
 	
+	//유진: current_player의 남은 카드들 버튼으로 보여주기
 	void chooseCard(Game game) {
-		
-		if(game.current_player.action_card.upone.num_thiscard>0)
-			ac_UpOneButton(game);
+		//유진: 각 조건문은 current_player의 카드가 남아있으면 해당 카드 버튼이 뜨도록 하였음
+		if(game.current_player.action_card.upone.num_thiscard>0) 
+			ac_UpOneButton(game); //유진:
 		
 		if(game.current_player.action_card.uptwo.num_thiscard>0)
 			ac_UpTwoButton(game);
@@ -364,7 +365,9 @@ public class GUI extends JFrame{
 			ac_RemoveButton(game);
 	}
 	
+	//액션카드 선택 후 남아있는 블럭들 중에서 선택할 수 있도록 블럭을 버튼으로 만들기
 	void chooseBlock(Game game) {
+		
 		//액션카드 버튼들 안보이게끔
 		ac_UpOneButton.setVisible(false);
 		ac_UpTwoButton.setVisible(false);
@@ -373,61 +376,42 @@ public class GUI extends JFrame{
 		ac_RemoveButton.setVisible(false);
 		
 		////블럭버튼들
-		//blockButton(game);
+		blockButton(game);
 		
 	}
 	
 	void blockButton(Game game) {
 		Block temp_block;
-		for(int i = 0; i<game.num_block; i++) {
-			if(game.block[i].order == 1) {
-				temp_block = game.block[i];
-				makeBlock(game, temp_block, 600, 500, 50, 50);
-			}else if(game.block[i].order == 2) {
-				temp_block = game.block[i];
-				makeBlock(game, temp_block, 600, 450, 50, 50);
-			}else if(game.block[i].order == 3) {
-				temp_block = game.block[i];
-				makeBlock(game, temp_block, 600, 400, 50, 50);
-			}else if(game.block[i].order == 4) {
-				temp_block = game.block[i];
-				makeBlock(game, temp_block, 600, 350, 50, 50);
-			}else if(game.block[i].order == 5) {
-				temp_block = game.block[i];
-				makeBlock(game, temp_block, 600, 300, 50, 50);
-			}else if(game.block[i].order == 6) {
-				temp_block = game.block[i];
-				makeBlock(game, temp_block, 600, 250, 50, 50);
-			}else if(game.block[i].order == 7) {
-				temp_block = game.block[i];
-				makeBlock(game, temp_block, 600, 200, 50, 50);
-			}else if(game.block[i].order == 8) {
-				temp_block = game.block[i];
-				makeBlock(game, temp_block, 600, 150, 50, 50);
-			}else if(game.block[i].order == 9) {
-				temp_block = game.block[i];
-				makeBlock(game, temp_block, 600, 100, 50, 50);
+		int height;
+		for(int i = 0; i<9; i++) { //9개의 색 블럭 확인
+			for(int j = 0; j<game.num_block;j++) { //남은 갯수 만큼의 등수 확인
+				if(game.block[i].order == j) {
+					height = 30+74*(j-1); //해당 등수의 위치 설정
+					temp_block = game.block[i];  //red
+					if(game.block[i].exist)
+						makeBlock(game, temp_block, i, height);//i에 따라 색 구분할 수 있게 매개변수로
+				}
 			}
 		}
 	}
 	
-	void makeBlock(Game game, Block block, int a, int b, int c, int d) {
+	void makeBlock(Game game, Block block, int index, int height) {
 		
-		if(block.color == "red") {
-			redBlockButton.setBounds(a, b, c, d);
+		if(index == 0) {
+			redBlockButton.setBounds(594, height, 78, 78);
 			redBlockButton.setBorderPainted(false);
 			redBlockButton.setContentAreaFilled(false);
 			redBlockButton.setFocusPainted(true);
 			redBlockButton.addMouseListener(new MouseAdapter() {
 				@Override
 				public void mousePressed(MouseEvent e) {
-					//매개변수 넘겨주기
+					//choose_block에 Block 변수로 넘겨주기
 					game.current_player.action_card.choose_block = block;
 				}
 			});
 			add(redBlockButton);
-		}else if(block.color == "orange") {
-			orangeBlockButton.setBounds(a, b, c, d);
+		}else if(index == 1) {
+			orangeBlockButton.setBounds(594, height, 78, 78);
 			orangeBlockButton.setBorderPainted(false);
 			orangeBlockButton.setContentAreaFilled(false);
 			orangeBlockButton.setFocusPainted(true);
@@ -440,8 +424,8 @@ public class GUI extends JFrame{
 			});
 			add(orangeBlockButton);
 
-		}else if(block.color == "yellow") {
-			yellowBlockButton.setBounds(a, b, c, d);
+		}else if(index == 2) {
+			yellowBlockButton.setBounds(594, height, 78, 78);
 			yellowBlockButton.setBorderPainted(false);
 			yellowBlockButton.setContentAreaFilled(false);
 			yellowBlockButton.setFocusPainted(true);
@@ -454,8 +438,8 @@ public class GUI extends JFrame{
 			});
 			add(yellowBlockButton);
 			
-		}else if(block.color == "green") {
-			greenBlockButton.setBounds(a, b, c, d);
+		}else if(index == 3) {
+			greenBlockButton.setBounds(594, height, 78, 78);
 			greenBlockButton.setBorderPainted(false);
 			greenBlockButton.setContentAreaFilled(false);
 			greenBlockButton.setFocusPainted(true);
@@ -468,8 +452,8 @@ public class GUI extends JFrame{
 			});
 			add(greenBlockButton);
 			
-		}else if(block.color == "sky") {
-			skyBlockButton.setBounds(a, b, c, d);
+		}else if(index == 4) {
+			skyBlockButton.setBounds(594, height, 78, 78);
 			skyBlockButton.setBorderPainted(false);
 			skyBlockButton.setContentAreaFilled(false);
 			skyBlockButton.setFocusPainted(true);
@@ -482,8 +466,8 @@ public class GUI extends JFrame{
 			});
 			add(skyBlockButton);
 			
-		}else if(block.color == "blue") {
-			blueBlockButton.setBounds(a, b, c, d);
+		}else if(index == 5) {
+			blueBlockButton.setBounds(594, height, 78, 78);
 			blueBlockButton.setBorderPainted(false);
 			blueBlockButton.setContentAreaFilled(false);
 			blueBlockButton.setFocusPainted(true);
@@ -496,8 +480,8 @@ public class GUI extends JFrame{
 			});
 			add(blueBlockButton);
 			
-		}else if(block.color == "purple") {
-			purpleBlockButton.setBounds(a, b, c, d);
+		}else if(index == 6) {
+			purpleBlockButton.setBounds(594, height, 78, 78);
 			purpleBlockButton.setBorderPainted(false);
 			purpleBlockButton.setContentAreaFilled(false);
 			purpleBlockButton.setFocusPainted(true);
@@ -510,8 +494,8 @@ public class GUI extends JFrame{
 			});
 			add(purpleBlockButton);
 			
-		}else if(block.color == "pink") {
-			pinkBlockButton.setBounds(a, b, c, d);
+		}else if(index == 7) {
+			pinkBlockButton.setBounds(594, height, 78, 78);
 			pinkBlockButton.setBorderPainted(false);
 			pinkBlockButton.setContentAreaFilled(false);
 			pinkBlockButton.setFocusPainted(true);
@@ -524,8 +508,8 @@ public class GUI extends JFrame{
 			});
 			add(pinkBlockButton);
 			
-		}else if(block.color == "gray") {
-			grayBlockButton.setBounds(a, b, c, d);
+		}else if(index == 8) {
+			grayBlockButton.setBounds(594, height, 78, 78);
 			grayBlockButton.setBorderPainted(false);
 			grayBlockButton.setContentAreaFilled(false);
 			grayBlockButton.setFocusPainted(true);

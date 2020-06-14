@@ -9,7 +9,7 @@ import java.io.*;
 import java.net.*;
 import java.util.Iterator;
 import java.util.Vector;
-
+/*
 public class client extends JFrame implements ActionListener{
 	private Image screenImage;
 	private Graphics screenGraphic;
@@ -49,6 +49,7 @@ public class client extends JFrame implements ActionListener{
 		private int i = 0;
 		private final static int DELAY = 10000;
 	//////////
+		
 	int port = 8800;
 	String playerName, playerScore, playerIdx;
 	boolean gameStartr;
@@ -241,9 +242,11 @@ public class client extends JFrame implements ActionListener{
 		String id = login.id;
 		
 		try {
+			System.out.println("client: 접속 요청 중..");
 			Socket s = new Socket(ip, port);
-			Sender sender = new Sender(s, id);
-			Receiver receiver = new Receiver(s);
+			System.out.println("client: 서버 접속 완료");
+			Sender sender = new Sender(s, id); //송신
+			Receiver receiver = new Receiver(s); //수신
 			new Thread(sender).start();
 			new Thread(receiver).start();
 			
@@ -288,10 +291,8 @@ public class client extends JFrame implements ActionListener{
 
 		public void actionPerformed(ActionEvent e) {
 			//보드판 안에 있는 버튼들에 대해서
-			/*
-			if(e.getSource() == Mission_button) {
-				
-			}*/
+			
+			//if(e.getSource() == Mission_button) {}
 		}
 
 	}//MyPlayer
@@ -315,4 +316,4 @@ public class client extends JFrame implements ActionListener{
 		}
 	}
 	
-}
+}*/
