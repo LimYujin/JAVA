@@ -22,6 +22,7 @@ class Game{
 	
 	int[] block_order = new int[9]; //처음 생성할 때만 쓰일 블럭 순서를 담은 배열
 	Block[] block;
+	//Block choose_block;
 	int num_block; //남아있는 블럭 개수
 	Player player1;
 	Player player2;
@@ -201,7 +202,7 @@ class MissonCard {
 	///GUI/// 얘도 세 가지 색깔 넣으면 그에 해당하는 이미지를 변수처럼 가지고 있게 할 수 있나?
 }
 
-class ActionCard extends Game {
+class ActionCard {
 	//7개의 액션카드
 	int num_card; //남은 액션 카드 수
 	///GUI/// 화면 상에 남아 있는 카드 보이게끔
@@ -225,15 +226,15 @@ class ActionCard extends Game {
 		this.num_card = 7;
 	}
 	
-	void next_turn() {
+	void next_turn(Game game) {
 		//다음 플레이어 순서로 넘어가기
 		///GUI///로도 어떤 플레이어 순서인지 표시해주기
-		if(current_player == player1)		current_player = player2;
-		else current_player = player2;
+		if(game.current_player == game.player1)		game.current_player = game.player2;
+		else game.current_player = game.player2;
 	} 
 }
 
-class RemoveCard extends ActionCard {
+class RemoveCard {
 	//마지막 블록 버리기
 	int num_thiscard;
 	
@@ -241,15 +242,15 @@ class RemoveCard extends ActionCard {
 	
 	void function(Game game) {
 		//마지막 블록 버리기, 이때 choose에 game의 마지막 블럭 넣어줘야함
-		for(int i=0;i<num_block;i++)
+		for(int i=0;i<game.num_block;i++)
 		{
-			if(game.block[i].order == num_block+1) //마지막블록인지 확인
+			if(game.block[i].order == game.num_block+1) //마지막블록인지 확인
 			{
 				game.block[i].exist = false; //해당 블록 버려짐
 				this.num_thiscard --; //해당 액션 카드 갯수 -1
-				num_card--; //전체 액션 카드 갯수 -1
+				game.current_player.action_card.num_card--; //전체 액션 카드 갯수 -1
 				///GUI///바뀐 블럭과 남아있는 액션카드 반영
-				this.next_turn(); //다음 플레이어로 넘어가기
+				game.current_player.action_card.next_turn(game); //다음 플레이어로 넘어가기
 				game.num_block--;
 			}
 		}
@@ -265,30 +266,32 @@ class RemoveCard extends ActionCard {
 		} 
 }
 
-class DownCard extends ActionCard {
+class DownCard {
 	//선택한 블록 마지막으로 내리기
 	int num_thiscard;
 	
 	DownCard() {this.num_thiscard = 1; } //처음에 주어진 카드 1개
 	
 	///GUI/// 이때 화면에서 클릭한 블럭이 Block형으로 choose_block 매개변수로 들어가게끔 할 수 있나?
-	void function() {
+	void function(Game game) {
 		//선택한 블록 마지막 순서로 바꾸기, 선택한 블록 매개변수로
-		int choose_block_order = choose_block.order;
-		for(int i=0;i<num_block;i++) {
-			//선택한 블록 아래 있는 것들 한 칸씩 위로
-			if(block[i].order > choose_block_order) {
-				block[i].order++;
-			}
-			//선택한 블록 맨 아래로
-			else if(block[i].order == choose_block_order) {
-				block[i].order = num_block;
+		int choose_block_order = game.current_player.action_card.choose_block.order;
+		for(int i=0;i<9;i++) {
+			if(game.block[i].exist) {
+				//선택한 블록 아래 있는 것들 한 칸씩 위로
+				if(game.block[i].order > choose_block_order) {
+					game.block[i].order++;
+				}
+				//선택한 블록 맨 아래로
+				else if(game.block[i].order == choose_block_order) {
+					game.block[i].order = game.num_block;
+				}
 			}
 		}
 		this.num_thiscard --; //해당 액션 카드 갯수 -1
-		num_card--; //전체 액션 카드 갯수 -1
+		game.current_player.action_card.num_card--; //전체 액션 카드 갯수 -1
 		///GUI///바뀐 블럭과 남아있는 액션카드 반영
-		this.next_turn(); //다음 순서로 넘어가기
+		game.current_player.action_card.next_turn(game); //다음 순서로 넘어가기
 	}
 	
 	boolean possible() { 
@@ -297,36 +300,36 @@ class DownCard extends ActionCard {
 		else return false; } //얘는 나머지 요소는 항상 true
 }
 
-class UpOne extends ActionCard {
+class UpOne {
 	//선택한 블록 위로 1칸 올리기
 	int num_thiscard;
 	
 	UpOne() { System.out.println("upone"); this.num_thiscard = 2; } //처음에 주어진 카드 2개
 
 	///GUI/// 이때 화면에서 클릭한 블럭이 Block형으로 choose_block 매개변수로 들어가게끔 할 수 있나?
-	void function() {
+	void function(Game game) {
 		//선택한 블록 위로 1칸 올리기
-		int choose_block_order = choose_block.order;
-		for(int i=0;i<num_block;i++) {
+		int choose_block_order = game.current_player.action_card.choose_block.order;
+		for(int i=0;i<game.num_block;i++) {
 			//선택한 블록 위의 블록 한 칸 아래로
-			if(block[i].order == choose_block_order+1) {
-				block[i].order--;
+			if(game.block[i].order == choose_block_order+1) {
+				game.block[i].order--;
 			}
 			//선택한 블록 한칸 위로
-			if(block[i].order == choose_block_order) {
-				block[i].order++;
+			if(game.block[i].order == choose_block_order) {
+				game.block[i].order++;
 			}
 		}
 		this.num_thiscard --; //해당 액션 카드 갯수 -1
-		num_card--; //전체 액션 카드 갯수 -1
+		game.current_player.action_card.num_card--; //전체 액션 카드 갯수 -1
 		///GUI///바뀐 블럭과 남아있는 액션카드 반영
-		this.next_turn(); //다음 순서로 넘어가기
+		game.current_player.action_card.next_turn(game); //다음 순서로 넘어가기
 	}
 	
-	boolean possible() {
+	boolean possible(Game game) {
 		//가능한 조건인지 확인 후 리턴
 		if(this.num_thiscard > 0) {
-			if(choose_block.order > 1) {
+			if(game.current_player.action_card.choose_block.order > 1) {
 			//선택 블록의 순서가 1보다 큰지
 			return true;
 			}
@@ -335,36 +338,36 @@ class UpOne extends ActionCard {
 		else return false;
 	}
 }
-class UpTwo extends ActionCard {
+class UpTwo {
 	//선택한 블록 위로 2칸 올리기
 	int num_thiscard;
 	
 	UpTwo() { this.num_thiscard = 1; } //처음에 주어진 카드 1개
 	
 	///GUI/// 이때 화면에서 클릭한 블럭이 Block형으로 choose_block 매개변수로 들어가게끔 할 수 있나?
-	void function() {
+	void function(Game game) {
 		//선택한 블록 위로 2칸 올리기
-		int choose_block_order = choose_block.order;
-		for(int i=0;i<num_block;i++) {
+		int choose_block_order = game.current_player.action_card.choose_block.order;
+		for(int i=0;i<game.num_block;i++) {
 		//선택한 블록 위의 두 블록 한 칸씩 아래로
-			if(block[i].order == choose_block_order+1 | block[i].order == choose_block_order+2) {
-				block[i].order--;
+			if(game.block[i].order == choose_block_order+1 | game.block[i].order == choose_block_order+2) {
+				game.block[i].order--;
 			}
 			//선택한 블록 2칸 위로
-			if(block[i].order == choose_block_order) {
-				block[i].order = block[i].order+2;
+			if(game.block[i].order == choose_block_order) {
+				game.block[i].order = game.block[i].order+2;
 			}
 		}
 		this.num_thiscard --; //해당 액션 카드 갯수 -1
-		num_card--; //전체 액션 카드 갯수 -1
+		game.current_player.action_card.num_card--; //전체 액션 카드 갯수 -1
 		///GUI///바뀐 블럭과 남아있는 액션카드 반영
-		this.next_turn(); //다음 순서로 넘어가기
+		game.current_player.action_card.next_turn(game);  //다음 순서로 넘어가기
 	}
 		
-	boolean possible() {
+	boolean possible(Game game) {
 		//가능한 조건인지 확인 후 리턴
 		if(this.num_thiscard > 0) {
-			if(choose_block.order > 2) {
+			if(game.current_player.action_card.choose_block.order > 2) {
 			//선택 블록의 순서가 2보다 큰지
 			return true;
 			}
@@ -373,36 +376,36 @@ class UpTwo extends ActionCard {
 		else return false;
 	}
 }
-class UpThree extends ActionCard {
+class UpThree {
 	//선택한 블록 위로 3칸 올리기
 	int num_thiscard;
 	
 	UpThree() { this.num_thiscard = 1; } //처음에 주어진 카드 1개
 	
 	///GUI/// 이때 화면에서 클릭한 블럭이 Block형으로 choose_block 매개변수로 들어가게끔 할 수 있나?
-	void function() {
+	void function(Game game) {
 		//선택한 블록 위로 3칸 올리기
-		int choose_block_order = choose_block.order;
-		for(int i=0;i<num_block;i++) {
+		int choose_block_order = game.current_player.action_card.choose_block.order;
+		for(int i=0;i<game.num_block;i++) {
 			//선택한 블록 위의 세 블록 한 칸씩 아래로
-			if(block[i].order >= choose_block_order+1 & block[i].order <= choose_block_order+3) {
-				block[i].order--;
+			if(game.block[i].order >= choose_block_order+1 & game.block[i].order <= choose_block_order+3) {
+				game.block[i].order--;
 			}
 			//선택한 블록  3칸 위로
-			if(block[i].order == choose_block_order) {
-				block[i].order = block[i].order+3;
+			if(game.block[i].order == choose_block_order) {
+				game.block[i].order = game.block[i].order+3;
 			}
 		}
 		this.num_thiscard --; //해당 액션 카드 갯수 -1
-		num_card--; //전체 액션 카드 갯수 -1
+		game.current_player.action_card.num_card--; //전체 액션 카드 갯수 -1
 		///GUI///바뀐 블럭과 남아있는 액션카드 반영
-		this.next_turn(); //다음 순서로 넘어가기
+		game.current_player.action_card.next_turn(game); //다음 순서로 넘어가기
 	}
 	
-	boolean possible() {
+	boolean possible(Game game) {
 		//가능한 조건인지 확인 후 리턴
 		if(this.num_thiscard > 0) {
-			if(choose_block.order > 3) {
+			if(game.current_player.action_card.choose_block.order > 3) {
 			//선택 블록의 순서가 3보다 큰지
 			return true;
 			}

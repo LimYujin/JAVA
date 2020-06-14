@@ -80,8 +80,6 @@ public class GUI_2 extends JFrame {
 	//********************************************************************************************************
 
 	//유진: 액션카드 버튼 이미지///////////////////////////////////////////////////////////////////////////////////////////////////
-	private ImageIcon actioncardButtonBasicImage = new ImageIcon(Main.class.getResource("../images/actioncard.png")); 
-	private JButton actioncardButton =new JButton(actioncardButtonBasicImage);
 	private ImageIcon ac_UpOneButtonBasicImage = new ImageIcon(Main.class.getResource("../images/ac2.png")); 
 	private JButton ac_UpOneButton =new JButton(ac_UpOneButtonBasicImage);
 	private ImageIcon ac_UpTwoButtonBasicImage = new ImageIcon(Main.class.getResource("../images/ac3.png")); 
@@ -92,6 +90,7 @@ public class GUI_2 extends JFrame {
 	private JButton ac_DownButton =new JButton(ac_DownButtonBasicImage);
 	private ImageIcon ac_RemoveButtonBasicImage = new ImageIcon(Main.class.getResource("../images/ac5.png")); 
 	private JButton ac_RemoveButton =new JButton(ac_RemoveButtonBasicImage);
+	
 	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	
 	//used for location of cursor
@@ -113,17 +112,11 @@ public class GUI_2 extends JFrame {
 		
 		//menu_Bar> exit button
 		exitButton.setBounds(1245,0,30,30);//location of exit button
-		exitButton.setBorderPainted(false);
-		exitButton.setContentAreaFilled(false);
-		exitButton.setFocusPainted(true);
 		exitButton.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseEntered(MouseEvent e) {
 				exitButton.setIcon(exitButtonEnteredImage);
 				exitButton.setCursor(new Cursor(Cursor.HAND_CURSOR));
-				
-				//Music buttonEnteredMusic=new Music("buttonEnteredMusic.mp3",false);
-				//buttonEnteredMusic.start();
 			}
 			@Override
 			public void mouseExited(MouseEvent e) {
@@ -132,9 +125,7 @@ public class GUI_2 extends JFrame {
 			}
 			@Override
 			public void mousePressed(MouseEvent e) {
-				//Music buttonEnteredMusic=new Music("buttonPressedMusic.mp3",false);
-				//buttonEnteredMusic.start();
-				//이 부분은 원래 버튼 누르면 "딸칵" 소리 나고 끝내려고 .sleep 이용해서 delay를 주려 했는데 소리 실패..
+
 				try {
 					Thread.sleep(1000);
 				} catch(InterruptedException ex) {
@@ -155,9 +146,6 @@ public class GUI_2 extends JFrame {
 			public void mouseEntered(MouseEvent e) {
 				startButton.setIcon(startButtonEnteredImage);
 				startButton.setCursor(new Cursor(Cursor.HAND_CURSOR));
-				
-				//Music buttonEnteredMusic=new Music("buttonEnteredMusic.mp3",false);
-				//buttonEnteredMusic.start();
 			}
 			@Override
 			public void mouseExited(MouseEvent e) {
@@ -166,47 +154,38 @@ public class GUI_2 extends JFrame {
 			}
 			@Override
 			public void mousePressed(MouseEvent e) {
-				//Music buttonEnteredMusic=new Music("buttonPressedMusic.mp3",false);
-				//buttonEnteredMusic.start();
 				
 			//Game START EVENT *********************************************************************************************//
-				//Game game = new Game();
-			    //game.game_init();
 			    
 				startButton.setVisible(false);
 				quitButton.setVisible(false);
 				introductionButton.setVisible(false);
 				background=new ImageIcon(Main.class.getResource("../images/mainBackground.png")).getImage();
 				
-				
 				//blocks
 				for(int i=0;i<9;i++) {
 					blocks_set(game, game.block[i].order, i);
 				}
 				
-				
 				//actionCard open해주는 버튼
 				actionCheck.setBounds(720,45,193,296);
-				actionCheck.setBorderPainted(false);
-				actionCheck.setContentAreaFilled(false);
-				actionCheck.setFocusPainted(true);
 				actionCheck.addMouseListener(new MouseAdapter() {
 					@Override
 					public void mousePressed(MouseEvent e) {
 						background=new ImageIcon(Main.class.getResource("../images/checkActioncard.png")).getImage();
-						actionCheck.setVisible(false);
-						missionCheck.setVisible(false);
+						actionCheck.setVisible(false); //액션카드 버튼 off
+						missionCheck.setVisible(false); //미션카드 버튼 off
 						//보드판의 블럭 버튼들 안보이게
-						redBlockButton.setVisible(false); orangeBlockButton.setVisible(false); yellowBlockButton.setVisible(false); greenBlockButton.setVisible(false); skyBlockButton.setVisible(false); blueBlockButton.setVisible(false); purpleBlockButton.setVisible(false); pinkBlockButton.setVisible(false); grayBlockButton.setVisible(false);
+						redBlockButton.setVisible(false); orangeBlockButton.setVisible(false); yellowBlockButton.setVisible(false); 
+						greenBlockButton.setVisible(false); skyBlockButton.setVisible(false); blueBlockButton.setVisible(false); 
+						purpleBlockButton.setVisible(false); pinkBlockButton.setVisible(false); grayBlockButton.setVisible(false);
 						
 						//카드 버튼으로 선택하기
 						chooseCard(game);
 						
+						/*
 						//뒤로 가기 버튼
 						backButton.setBounds(1100,30,50,50);
-						backButton.setBorderPainted(false);
-						backButton.setContentAreaFilled(false);
-						backButton.setFocusPainted(true);
 						backButton.addMouseListener(new MouseAdapter() {
 							@Override
 							public void mouseEntered(MouseEvent e) {
@@ -227,20 +206,19 @@ public class GUI_2 extends JFrame {
 								introductionButton.setVisible(false);
 								actionCheck.setVisible(true);
 								missionCheck.setVisible(true);
-								redBlockButton.setVisible(true); orangeBlockButton.setVisible(true); yellowBlockButton.setVisible(true); greenBlockButton.setVisible(true); skyBlockButton.setVisible(true); blueBlockButton.setVisible(true); purpleBlockButton.setVisible(true); pinkBlockButton.setVisible(true); grayBlockButton.setVisible(true);
+								redBlockButton.setVisible(true); orangeBlockButton.setVisible(true); yellowBlockButton.setVisible(true); 
+								greenBlockButton.setVisible(true); skyBlockButton.setVisible(true); blueBlockButton.setVisible(true); 
+								purpleBlockButton.setVisible(true); pinkBlockButton.setVisible(true); grayBlockButton.setVisible(true);
 							}
 						});
 						add(backButton);
-						backButton.setVisible(true);
+						backButton.setVisible(true);*/
 					}
 				});
 				add(actionCheck);
 				
 				//mission card
 				missionCheck.setBounds(720,400,193,296);
-				missionCheck.setBorderPainted(false);
-				missionCheck.setContentAreaFilled(false);
-				missionCheck.setFocusPainted(true);
 				//p1, p2에 따라 mission card에 포함될 block 색 표현하는 label 설정
 			    JPanel p1_mc=new JPanel();
 			    JPanel p2_mc=new JPanel();
@@ -310,9 +288,6 @@ public class GUI_2 extends JFrame {
 			}
 		});
 		add(startButton);
-		
-		
-		
 		
 		//quit button
 		quitButton.setBounds(515,500,250,75);
@@ -447,78 +422,60 @@ public class GUI_2 extends JFrame {
 		repaint(); 
 	}
 		
-	
-
 	//blocks button set
 	//a가 블럭 순서, i가 포문 갯수
 	public void blocks_set(Game game, int a, int i) {
-		int height=30+74*(a-1);
-		switch(i) {
-    	case 0:
-    		redBlockButton.setBounds(594,height,78,78);
-    		redBlockButton.setBorderPainted(false);
-    		redBlockButton.setContentAreaFilled(false);
-    		redBlockButton.setFocusPainted(true);
-    		add(redBlockButton);
-    		break;
-    	case 1:
-    		orangeBlockButton.setBounds(594,height,78,78);
-    		orangeBlockButton.setBorderPainted(false);
-    		orangeBlockButton.setContentAreaFilled(false);
-    		orangeBlockButton.setFocusPainted(true);
-    		add(orangeBlockButton);
-    		break;
-    	case 2:
-    		yellowBlockButton.setBounds(594,height,78,78);
-    		yellowBlockButton.setBorderPainted(false);
-    		yellowBlockButton.setContentAreaFilled(false);
-    		yellowBlockButton.setFocusPainted(true);
-    		add(yellowBlockButton);
-    		break;
-    	case 3:
-    		greenBlockButton.setBounds(594,height,78,78);
-    		greenBlockButton.setBorderPainted(false);
-    		greenBlockButton.setContentAreaFilled(false);
-    		greenBlockButton.setFocusPainted(true);
-    		add(greenBlockButton);
-    		break;
-    	case 4:
-    		skyBlockButton.setBounds(594,height,78,78);
-    		skyBlockButton.setBorderPainted(false);
-    		skyBlockButton.setContentAreaFilled(false);
-    		skyBlockButton.setFocusPainted(true);
-    		add(skyBlockButton);
-    		break;
-    	case 5:
-    		blueBlockButton.setBounds(594,height,78,78);
-    		blueBlockButton.setBorderPainted(false);
-    		blueBlockButton.setContentAreaFilled(false);
-    		blueBlockButton.setFocusPainted(true);
-    		add(blueBlockButton);
-    		break;
-    	case 6:
-    		purpleBlockButton.setBounds(594,height,78,78);
-    		purpleBlockButton.setBorderPainted(false);
-    		purpleBlockButton.setContentAreaFilled(false);
-    		purpleBlockButton.setFocusPainted(true);
-    		add(purpleBlockButton);
-    		break;
-    	case 7:
-    		pinkBlockButton.setBounds(594,height,78,78);
-    		pinkBlockButton.setBorderPainted(false);
-    		pinkBlockButton.setContentAreaFilled(false);
-    		pinkBlockButton.setFocusPainted(true);
-    		add(pinkBlockButton);
-    		break;
-    	case 8:
-    		grayBlockButton.setBounds(594,height,78,78);
-    		grayBlockButton.setBorderPainted(false);
-    		grayBlockButton.setContentAreaFilled(false);
-    		grayBlockButton.setFocusPainted(true);
-    		add(grayBlockButton);
-    		break;
+		int height=30+74*(9-a);
+		if(game.block[i].exist) {   ////블럭이 존재한다면 만들어주도록 추가
+			switch(i) {
+	    	case 0:
+	    		redBlockButton.setBounds(594,height,78,78);;
+	    		redBlockButton.setVisible(true);
+	    		add(redBlockButton);
+	    		break;
+	    	case 1:
+	    		orangeBlockButton.setBounds(594,height,78,78);
+	    		orangeBlockButton.setVisible(true);
+	    		add(orangeBlockButton);
+	    		break;
+	    	case 2:
+	    		yellowBlockButton.setBounds(594,height,78,78);
+	    		yellowBlockButton.setVisible(true);
+	    		add(yellowBlockButton);
+	    		break;
+	    	case 3:
+	    		greenBlockButton.setBounds(594,height,78,78);
+	    		greenBlockButton.setVisible(true);
+	    		add(greenBlockButton);
+	    		break;
+	    	case 4:
+	    		skyBlockButton.setBounds(594,height,78,78);
+	    		skyBlockButton.setVisible(true);
+	    		add(skyBlockButton);
+	    		break;
+	    	case 5:
+	    		blueBlockButton.setBounds(594,height,78,78);
+	    		blueBlockButton.setVisible(true);
+	    		add(blueBlockButton);
+	    		break;
+	    	case 6:
+	    		purpleBlockButton.setBounds(594,height,78,78);
+	    		purpleBlockButton.setVisible(true);
+	    		add(purpleBlockButton);
+	    		break;
+	    	case 7:
+	    		pinkBlockButton.setBounds(594,height,78,78);
+	    		pinkBlockButton.setVisible(true);
+	    		add(pinkBlockButton);
+	    		break;
+	    	case 8:
+	    		grayBlockButton.setBounds(594,height,78,78);
+	    		grayBlockButton.setVisible(true);
+	    		add(grayBlockButton);
+	    		break;
+			}
     	}
-	}
+	}//여기까지 blocks_set함수
 	
 	//mission card 버튼 누르면 표시되는 mission set
 	public void addPanel_mc(JPanel jp, String s) {
@@ -570,6 +527,7 @@ public class GUI_2 extends JFrame {
     		break;
     	}
 	}
+	
 	//유진: 액션카드 실행에 관한 함수들///////////////////////////////////////////////////////////////
 	//유진: current_player의 남은 카드들 버튼으로 보여주기
 		void chooseCard(Game game) {
@@ -591,175 +549,170 @@ public class GUI_2 extends JFrame {
 		}
 		//유진: 해당 카드 버튼 띄우기
 		void ac_UpOneButton(Game game) {
-			ac_UpOneButton.setBounds(300, 300, 200, 200);
-			ac_UpOneButton.setBorderPainted(false);
-			ac_UpOneButton.setContentAreaFilled(false);
-			ac_UpOneButton.setFocusPainted(true);
+			ac_UpOneButton.setBounds(625, 85, 184, 286);
+			ac_UpOneButton.setVisible(true);
 			ac_UpOneButton.addMouseListener(new MouseAdapter() {
 				@Override
 				public void mousePressed(MouseEvent e) {
-					//Music buttonEnteredMusic=new Music("buttonPressedMusic.mp3",false);
-					//buttonEnteredMusic.start();
-					
 					//choose a block
 					background=new ImageIcon(Main.class.getResource("../images/mainBackground.png")).getImage();
-					actioncardButton.setVisible(true); //다시 액션카드 open버튼 on
-					chooseBlock(game); //현재 상황에 맞춰 남은 블럭 버튼들 보여주기 
-					game.current_player.action_card.upone.function();//함수 내에서 해당 카드 기능 실행하기
-					
+					//backButton.setVisible(false);
+					boolean flag= false;
+					chooseBlock(game, flag); //현재 상황에 맞춰 남은 블럭 버튼들 보여주기 
+					game.current_player.action_card.upone.function(game); //함수 내에서 해당 카드 기능 실행하기
+					for(int i=0;i<9;i++) { //액션카드 기능 반영하여 다시 블럭 셋팅
+						blocks_set(game, game.block[i].order, i); //존재하면 set하게끔 바꿔주기 추가..?
+					}
+					actionCheck.setVisible(true);//다시 액션카드 open버튼 on
+					missionCheck.setVisible(true);
 				}
 			});
 			add(ac_UpOneButton);
 		}
 		
 		void ac_UpTwoButton(Game game) {
-			ac_UpTwoButton.setBounds(400, 300, 200, 200);
-			ac_UpTwoButton.setBorderPainted(false);
-			ac_UpTwoButton.setContentAreaFilled(false);
-			ac_UpTwoButton.setFocusPainted(true);
+			ac_UpTwoButton.setBounds(830, 85, 184, 286);
+			ac_UpTwoButton.setVisible(true);
 			ac_UpTwoButton.addMouseListener(new MouseAdapter() {
 				@Override
 				public void mousePressed(MouseEvent e) {
-					//Music buttonEnteredMusic=new Music("buttonPressedMusic.mp3",false);
-					//buttonEnteredMusic.start();
-					
 					//choose a block
 					background=new ImageIcon(Main.class.getResource("../images/mainBackground.png")).getImage();
-					actioncardButton.setVisible(true); //다시 액션카드 open버튼 on
-					chooseBlock(game); //현재 상황에 맞춰 남은 블럭 버튼들 보여주기 
-					game.current_player.action_card.uptwo.function(); //함수 내에서 해당 카드 기능 실행하기
-					
+					boolean flag= false;
+					chooseBlock(game, flag);//현재 상황에 맞춰 남은 블럭 버튼들 보여주기 
+					game.current_player.action_card.uptwo.function(game); //함수 내에서 해당 카드 기능 실행하기
+					for(int i=0;i<9;i++) { //액션카드 기능 반영하여 다시 블럭 셋팅
+						blocks_set(game, game.block[i].order, i);
+					}
+					actionCheck.setVisible(true);//다시 액션카드 open버튼 on
+					missionCheck.setVisible(true);
 				}
 			});
 			add(ac_UpTwoButton);
 		}
 		
 		void ac_UpThreeButton(Game game) {
-			ac_UpThreeButton.setBounds(500, 300, 200, 200);
-			ac_UpThreeButton.setBorderPainted(false);
-			ac_UpThreeButton.setContentAreaFilled(false);
-			ac_UpThreeButton.setFocusPainted(true);
+			ac_UpThreeButton.setBounds(415, 85, 184, 286);
+			ac_UpThreeButton.setVisible(true);
 			ac_UpThreeButton.addMouseListener(new MouseAdapter() {
 				@Override
 				public void mousePressed(MouseEvent e) {
-					//Music buttonEnteredMusic=new Music("buttonPressedMusic.mp3",false);
-					//buttonEnteredMusic.start();
-					
 					//choose a block
 					background=new ImageIcon(Main.class.getResource("../images/mainBackground.png")).getImage();
-					actioncardButton.setVisible(true); //다시 액션카드 open버튼 on
-					chooseBlock(game); //현재 상황에 맞춰 남은 블럭 버튼들 보여주기 
-					game.current_player.action_card.upthree.function();//함수 내에서 해당 카드 기능 실행하기
+					boolean flag= false;
+					chooseBlock(game, flag); //현재 상황에 맞춰 남은 블럭 버튼들 보여주기 
+					game.current_player.action_card.upthree.function(game);//함수 내에서 해당 카드 기능 실행하기
+					for(int i=0;i<9;i++) { //액션카드 기능 반영하여 다시 블럭 셋팅
+						blocks_set(game, game.block[i].order, i);
+					}
+					actionCheck.setVisible(true);//다시 액션카드 open버튼 on
+					missionCheck.setVisible(true);
 				}
 			});
 			add(ac_UpThreeButton);
 		}
 		
 		void ac_DownButton(Game game) {
-			ac_DownButton.setBounds(600, 300, 200, 200);
-			ac_DownButton.setBorderPainted(false);
-			ac_DownButton.setContentAreaFilled(false);
-			ac_DownButton.setFocusPainted(true);
+			ac_DownButton.setBounds(625, 400, 184, 286);
+			ac_DownButton.setVisible(true);
 			ac_DownButton.addMouseListener(new MouseAdapter() {
 				@Override
 				public void mousePressed(MouseEvent e) {				
 					//choose a block
 					background=new ImageIcon(Main.class.getResource("../images/mainBackground.png")).getImage();
-					actioncardButton.setVisible(true); //다시 액션카드 open버튼 on
-					chooseBlock(game); //현재 상황에 맞춰 남은 블럭 버튼들 보여주기 
-					game.current_player.action_card.down.function();//함수 내에서 해당 카드 기능 실행하기
+					boolean flag= false;
+					chooseBlock(game, flag); //현재 상황에 맞춰 남은 블럭 버튼들 보여주기 
+					game.current_player.action_card.down.function(game);//함수 내에서 해당 카드 기능 실행하기
+					for(int i=0;i<9;i++) { //액션카드 기능 반영하여 다시 블럭 셋팅
+						blocks_set(game, game.block[i].order, i);
+					}
+					actionCheck.setVisible(true);//다시 액션카드 open버튼 on
+					missionCheck.setVisible(true);
 				}
 			});
 			add(ac_DownButton);
 		}
 		
 		void ac_RemoveButton(Game game) {
-			ac_RemoveButton.setBounds(700, 300, 200, 200);
-			ac_RemoveButton.setBorderPainted(false);
-			ac_RemoveButton.setContentAreaFilled(false);
-			ac_RemoveButton.setFocusPainted(true);
+			ac_RemoveButton.setBounds(830, 400, 184, 286);
+			ac_RemoveButton.setVisible(true);
 			ac_RemoveButton.addMouseListener(new MouseAdapter() {
 				@Override
 				public void mousePressed(MouseEvent e) {
-					//Music buttonEnteredMusic=new Music("buttonPressedMusic.mp3",false);
-					//buttonEnteredMusic.start();
-					
 					//choose a block
+					ac_UpOneButton.setVisible(false); ac_UpTwoButton.setVisible(false); 
+					ac_UpThreeButton.setVisible(false); ac_DownButton.setVisible(false); ac_RemoveButton.setVisible(false);
 					background=new ImageIcon(Main.class.getResource("../images/mainBackground.png")).getImage();
-					actioncardButton.setVisible(true); //다시 액션카드 open버튼 on
+					backButton.setVisible(false); //뒤로가기 버튼 없애기
+					//액션카드 버튼들 안보이게끔
 					//애는 블럭 선택할 필요 없음. 무조건 마지막 블럭 버리기
-					game.current_player.action_card.remove.function();//함수 내에서 해당 카드 기능 실행하기
-					
+					game.current_player.action_card.remove.function(game);//함수 내에서 해당 카드 기능 실행하기
+					for(int i=0;i<9;i++) { //액션카드 기능 반영하여 다시 블럭 셋팅
+						blocks_set(game, game.block[i].order, i);
+					}
+					actionCheck.setVisible(true);//다시 액션카드 open버튼 on
+					missionCheck.setVisible(true);
 				}
 			});
 			add(ac_RemoveButton);
 		}
 		
 		//유진: 액션카드 선택 후 남아있는 블럭들 중에서 선택할 수 있도록 블럭을 버튼으로 만들기
-		void chooseBlock(Game game) {
-			
-			//액션카드 버튼들 안보이게끔
-			ac_UpOneButton.setVisible(false);
-			ac_UpTwoButton.setVisible(false);
-			ac_UpThreeButton.setVisible(false);
-			ac_DownButton.setVisible(false);
-			ac_RemoveButton.setVisible(false);
-			
-			////블럭버튼들
-			blockButton(game); //남아있는 블럭인지 확인 후 버튼 생성
-		}
-		
 		//남아있는 블럭인지 확인 후 버튼 생성
-		void blockButton(Game game) {
+		void chooseBlock(Game game, boolean flag) {
+			ac_UpOneButton.setVisible(false); ac_UpTwoButton.setVisible(false); 
+			ac_UpThreeButton.setVisible(false); ac_DownButton.setVisible(false); ac_RemoveButton.setVisible(false);
+			
 			Block temp_block;
 			int height;
 			for(int i = 0; i<9; i++) { //9개의 색 블럭 확인
-				for(int j = 0; j<game.num_block;j++) { //남은 갯수 만큼의 등수 확인
+				for(int j = 1; j<=game.num_block;j++) { //남은 갯수 만큼의 등수 확인
 					if(game.block[i].exist) {//이 블럭 살아 있니
 						if(game.block[i].order == j) {
-							height = 30+74*(j-1); //해당 등수의 위치 설정
-							temp_block = game.block[i];  //red
-							makeBlock(game, temp_block, i, height);//i에 따라 색 구분할 수 있게 매개변수로
+							height = 30+74*(9-j); //해당 등수의 위치 설정
+							temp_block = game.block[i];
+							System.out.println("make block["+i+"] ("+j+")");
+							makeBlock(game, temp_block, i, height, flag);//i에 따라 색 구분할 수 있게 매개변수로
 						}
 					}
 				}
 			}
 		}
 		
-		void makeBlock(Game game, Block block, int index, int height) {
-			
+		void makeBlock(Game game, Block block, int index, int height, boolean flag) {
 			if(index == 0) {
 				redBlockButton.setBounds(594, height, 78, 78);
-				redBlockButton.setBorderPainted(false);
-				redBlockButton.setContentAreaFilled(false);
-				redBlockButton.setFocusPainted(true);
+				redBlockButton.setVisible(true);
 				redBlockButton.addMouseListener(new MouseAdapter() {
 					@Override
 					public void mousePressed(MouseEvent e) {
 						//choose_block에 Block 변수로 넘겨주기
 						game.current_player.action_card.choose_block = block;
+						game.current_player.action_card.upone.function(game);//함수 내에서 해당 카드 기능 실행하기
+						for(int i=0;i<9;i++) { //액션카드 기능 반영하여 다시 블럭 셋팅
+							blocks_set(game, game.block[i].order, i);
+						}
 					}
 				});
 				add(redBlockButton);
 			}else if(index == 1) {
 				orangeBlockButton.setBounds(594, height, 78, 78);
-				orangeBlockButton.setBorderPainted(false);
-				orangeBlockButton.setContentAreaFilled(false);
-				orangeBlockButton.setFocusPainted(true);
+				orangeBlockButton.setVisible(true);
 				orangeBlockButton.addMouseListener(new MouseAdapter() {
+					
 					@Override
 					public void mousePressed(MouseEvent e) {
+						
 						//매개변수 넘겨주기
 						game.current_player.action_card.choose_block = block;
+						game.current_player.action_card.upone.function(game);//함수 내에서 해당 카드 기능 실행하기
 					}
 				});
 				add(orangeBlockButton);
 
 			}else if(index == 2) {
 				yellowBlockButton.setBounds(594, height, 78, 78);
-				yellowBlockButton.setBorderPainted(false);
-				yellowBlockButton.setContentAreaFilled(false);
-				yellowBlockButton.setFocusPainted(true);
+				yellowBlockButton.setVisible(true);
 				yellowBlockButton.addMouseListener(new MouseAdapter() {
 					@Override
 					public void mousePressed(MouseEvent e) {
@@ -771,23 +724,22 @@ public class GUI_2 extends JFrame {
 				
 			}else if(index == 3) {
 				greenBlockButton.setBounds(594, height, 78, 78);
-				greenBlockButton.setBorderPainted(false);
-				greenBlockButton.setContentAreaFilled(false);
-				greenBlockButton.setFocusPainted(true);
+				greenBlockButton.setVisible(true);
 				greenBlockButton.addMouseListener(new MouseAdapter() {
 					@Override
 					public void mousePressed(MouseEvent e) {
 						//매개변수 넘겨주기
+						background=new ImageIcon(Main.class.getResource("../images/instructionBack.png")).getImage();
 						game.current_player.action_card.choose_block = block;
+						game.current_player.action_card.upone.function(game);//함수 내에서 해당 카드 기능 실행하기
+						
 					}
 				});
 				add(greenBlockButton);
 				
 			}else if(index == 4) {
 				skyBlockButton.setBounds(594, height, 78, 78);
-				skyBlockButton.setBorderPainted(false);
-				skyBlockButton.setContentAreaFilled(false);
-				skyBlockButton.setFocusPainted(true);
+				skyBlockButton.setVisible(true);
 				skyBlockButton.addMouseListener(new MouseAdapter() {
 					@Override
 					public void mousePressed(MouseEvent e) {
@@ -799,9 +751,7 @@ public class GUI_2 extends JFrame {
 				
 			}else if(index == 5) {
 				blueBlockButton.setBounds(594, height, 78, 78);
-				blueBlockButton.setBorderPainted(false);
-				blueBlockButton.setContentAreaFilled(false);
-				blueBlockButton.setFocusPainted(true);
+				blueBlockButton.setVisible(true);
 				blueBlockButton.addMouseListener(new MouseAdapter() {
 					@Override
 					public void mousePressed(MouseEvent e) {
@@ -813,9 +763,7 @@ public class GUI_2 extends JFrame {
 				
 			}else if(index == 6) {
 				purpleBlockButton.setBounds(594, height, 78, 78);
-				purpleBlockButton.setBorderPainted(false);
-				purpleBlockButton.setContentAreaFilled(false);
-				purpleBlockButton.setFocusPainted(true);
+				purpleBlockButton.setVisible(true);
 				purpleBlockButton.addMouseListener(new MouseAdapter() {
 					@Override
 					public void mousePressed(MouseEvent e) {
@@ -827,9 +775,7 @@ public class GUI_2 extends JFrame {
 				
 			}else if(index == 7) {
 				pinkBlockButton.setBounds(594, height, 78, 78);
-				pinkBlockButton.setBorderPainted(false);
-				pinkBlockButton.setContentAreaFilled(false);
-				pinkBlockButton.setFocusPainted(true);
+				pinkBlockButton.setVisible(true);
 				pinkBlockButton.addMouseListener(new MouseAdapter() {
 					@Override
 					public void mousePressed(MouseEvent e) {
@@ -841,9 +787,7 @@ public class GUI_2 extends JFrame {
 				
 			}else if(index == 8) {
 				grayBlockButton.setBounds(594, height, 78, 78);
-				grayBlockButton.setBorderPainted(false);
-				grayBlockButton.setContentAreaFilled(false);
-				grayBlockButton.setFocusPainted(true);
+				grayBlockButton.setVisible(true);
 				grayBlockButton.addMouseListener(new MouseAdapter() {
 					@Override
 					public void mousePressed(MouseEvent e) {
@@ -855,5 +799,4 @@ public class GUI_2 extends JFrame {
 			}
 		}
 		/////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-		
 }
