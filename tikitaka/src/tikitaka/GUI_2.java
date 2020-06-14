@@ -182,37 +182,6 @@ public class GUI_2 extends JFrame {
 						
 						//카드 버튼으로 선택하기
 						chooseCard(game);
-						
-						/*
-						//뒤로 가기 버튼
-						backButton.setBounds(1100,30,50,50);
-						backButton.addMouseListener(new MouseAdapter() {
-							@Override
-							public void mouseEntered(MouseEvent e) {
-								backButton.setIcon(backButtonEnteredImage);
-								backButton.setCursor(new Cursor(Cursor.HAND_CURSOR));
-							}
-							@Override
-							public void mouseExited(MouseEvent e) {
-								backButton.setIcon(backButtonBasicImage);
-								backButton.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
-							}
-							@Override
-							public void mousePressed(MouseEvent e) {
-								background=new ImageIcon(Main.class.getResource("../images/mainBackground.png")).getImage();
-								backButton.setVisible(false);
-								startButton.setVisible(false);
-								quitButton.setVisible(false);
-								introductionButton.setVisible(false);
-								actionCheck.setVisible(true);
-								missionCheck.setVisible(true);
-								redBlockButton.setVisible(true); orangeBlockButton.setVisible(true); yellowBlockButton.setVisible(true); 
-								greenBlockButton.setVisible(true); skyBlockButton.setVisible(true); blueBlockButton.setVisible(true); 
-								purpleBlockButton.setVisible(true); pinkBlockButton.setVisible(true); grayBlockButton.setVisible(true);
-							}
-						});
-						add(backButton);
-						backButton.setVisible(true);*/
 					}
 				});
 				add(actionCheck);
@@ -551,6 +520,7 @@ public class GUI_2 extends JFrame {
 		void ac_UpOneButton(Game game) {
 			ac_UpOneButton.setBounds(625, 85, 184, 286);
 			ac_UpOneButton.setVisible(true);
+			
 			ac_UpOneButton.addMouseListener(new MouseAdapter() {
 				@Override
 				public void mousePressed(MouseEvent e) {
@@ -678,14 +648,15 @@ public class GUI_2 extends JFrame {
 				}
 			}
 		}
-		
 		void makeBlock(Game game, Block block, int index, int height, boolean flag) {
+			
 			if(index == 0) {
 				redBlockButton.setBounds(594, height, 78, 78);
 				redBlockButton.setVisible(true);
 				redBlockButton.addMouseListener(new MouseAdapter() {
 					@Override
 					public void mousePressed(MouseEvent e) {
+						
 						//choose_block에 Block 변수로 넘겨주기
 						game.current_player.action_card.choose_block = block;
 						game.current_player.action_card.upone.function(game);//함수 내에서 해당 카드 기능 실행하기

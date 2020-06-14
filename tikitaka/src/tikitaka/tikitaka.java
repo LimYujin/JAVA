@@ -56,8 +56,8 @@ class Game{
 		this.block[8] = new Block("gray", block_order[8]);
 		
 		//player 2명 생성
-		this.player1 = new Player();
-		this.player2 = new Player();
+		this.player1 = new Player("player1");
+		this.player2 = new Player("player2");
 		this.current_player = player1;
 		
 		//보드판에 남아있는 블럭 갯수
@@ -137,6 +137,7 @@ class Player extends Game{
 	}
 	//생성자 : 처음 객체 생성 시 기본 셋팅
 	Player() { this.action_card = new ActionCard(); action_card.ActionCard_init(); this.score = 0; }
+	Player(String id) { this.action_card = new ActionCard(); action_card.ActionCard_init(); this.score = 0; this.id = id;}
 	
 }
 
@@ -308,22 +309,30 @@ class UpOne {
 
 	///GUI/// 이때 화면에서 클릭한 블럭이 Block형으로 choose_block 매개변수로 들어가게끔 할 수 있나?
 	void function(Game game) {
+		System.out.println("Who's turn : " + game.current_player.id);
 		//선택한 블록 위로 1칸 올리기
 		int choose_block_order = game.current_player.action_card.choose_block.order;
+		Block temp1 = null; //밑으로 내릴 블록
+		Block temp2 = null; //위로 올라갈 블록
 		for(int i=0;i<game.num_block;i++) {
 			//선택한 블록 위의 블록 한 칸 아래로
 			if(game.block[i].order == choose_block_order+1) {
-				game.block[i].order--;
+				temp1 = game.block[i];
 			}
 			//선택한 블록 한칸 위로
 			if(game.block[i].order == choose_block_order) {
-				game.block[i].order++;
+				temp2 = game.block[i];
 			}
 		}
+		temp1.order--;
+		System.out.println("UpOne: block[" + "temp1" + "] : " + temp1.order);
+		temp2.order++;
+		System.out.println("UpOne: block[" + "temp2" + "] : " +temp2.order);
 		this.num_thiscard --; //해당 액션 카드 갯수 -1
 		game.current_player.action_card.num_card--; //전체 액션 카드 갯수 -1
 		///GUI///바뀐 블럭과 남아있는 액션카드 반영
 		game.current_player.action_card.next_turn(game); //다음 순서로 넘어가기
+		System.out.println("UpOne////");
 	}
 	
 	boolean possible(Game game) {
