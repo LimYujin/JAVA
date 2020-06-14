@@ -373,7 +373,7 @@ public class GUI extends JFrame{
 		ac_RemoveButton.setVisible(false);
 		
 		////블럭버튼들
-		blockButton(game);
+		//blockButton(game);
 		
 	}
 	
@@ -412,7 +412,7 @@ public class GUI extends JFrame{
 	}
 	
 	void makeBlock(Game game, Block block, int a, int b, int c, int d) {
-		/*
+		
 		if(block.color == "red") {
 			redBlockButton.setBounds(a, b, c, d);
 			redBlockButton.setBorderPainted(false);
@@ -426,20 +426,20 @@ public class GUI extends JFrame{
 				}
 			});
 			add(redBlockButton);
-		}
-		else if(block.color == "orange") {
+		}else if(block.color == "orange") {
 			orangeBlockButton.setBounds(a, b, c, d);
 			orangeBlockButton.setBorderPainted(false);
 			orangeBlockButton.setContentAreaFilled(false);
 			orangeBlockButton.setFocusPainted(true);
 			orangeBlockButton.addMouseListener(new MouseAdapter() {
+				@Override
 				public void mousePressed(MouseEvent e) {
 					//매개변수 넘겨주기
 					game.current_player.action_card.choose_block = block;
 				}
 			});
 			add(orangeBlockButton);
-			
+
 		}else if(block.color == "yellow") {
 			yellowBlockButton.setBounds(a, b, c, d);
 			yellowBlockButton.setBorderPainted(false);
@@ -537,7 +537,7 @@ public class GUI extends JFrame{
 				}
 			});
 			add(grayBlockButton);
-		}*/
+		}
 	}
 	void ac_UpOneButton(Game game) {
 		ac_UpOneButton.setBounds(300, 300, 200, 200);
@@ -582,7 +582,7 @@ public class GUI extends JFrame{
 		});
 		add(ac_UpTwoButton);
 	}
-		
+	
 	void ac_UpThreeButton(Game game) {
 		ac_UpThreeButton.setBounds(500, 300, 200, 200);
 		ac_UpThreeButton.setBorderPainted(false);
@@ -599,6 +599,8 @@ public class GUI extends JFrame{
 				actioncardButton.setVisible(true); //다시 액션카드 open버튼 on
 				chooseBlock(game); //현재 상황에 맞춰 남은 블럭 버튼들 보여주기 
 				game.current_player.action_card.upthree.function();
+			}
+		});
 		add(ac_UpThreeButton);
 	}
 	
@@ -641,6 +643,4 @@ public class GUI extends JFrame{
 		});
 		add(ac_RemoveButton);
 	}
-	
-	
 }
