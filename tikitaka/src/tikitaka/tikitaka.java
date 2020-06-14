@@ -3,6 +3,9 @@ package tikitaka;
 import java.util.LinkedList;
 import java.util.Random;
 
+import javax.swing.ImageIcon;
+import javax.swing.JButton;
+
 /////////////주석 설명/////////////
 /* 해당 코드에 대한 설명은 //로 주석처리
  * 해당 부분에 구현해야 될 코드 설명은 ////로 주석처리
@@ -138,7 +141,7 @@ class Player extends Game{
 		}
 	}
 	//생성자 : 처음 객체 생성 시 기본 셋팅
-	Player() { this.action_card = new ActionCard(); this.score = 0; }
+	Player() { this.action_card = new ActionCard(); action_card.ActionCard_init(); this.score = 0; }
 	
 }
 
@@ -151,7 +154,9 @@ class Block {
 	
 	Block() {}
 	//두 번째 생성자: 객체 처음에 생성할 때 랜덤으로 돌린 순서랑 컬러만 넣어서 블럭들 생성하기
-	Block(String color, int order) { this.color = color; this.order = order; this.exist = true;	}
+	Block(String color, int order) { 
+		this.color = color; this.order = order; this.exist = true;
+	}
 	///GUI/// 색깔 매개변수로 넣으면 각 블록에 해당하는 이미지도 변수처럼 가지고 있게 할 수 있나?
 }
 
@@ -207,18 +212,23 @@ class ActionCard extends Game {
 	int num_card; //남은 액션 카드 수
 	///GUI/// 화면 상에 남아 있는 카드 보이게끔
 	Block choose_block; //선택한 블럭 객체
+	//void fuction() {}
 	UpOne upone;
 	UpTwo uptwo;
 	UpThree upthree;
 	RemoveCard remove;
 	DownCard down;
 	
-	void ActioinCard_init() {
+	void ActionCard_init() {
 		upone = new UpOne();
 		uptwo = new UpTwo();
 		upthree = new UpThree();
 		remove = new RemoveCard();
 		down = new DownCard();
+	}
+	
+	ActionCard() {
+		this.num_card = 7;
 	}
 	
 	void next_turn() {
@@ -235,7 +245,7 @@ class RemoveCard extends ActionCard {
 	
 	RemoveCard() { this.num_thiscard = 2; } //처음에 주어진 카드 2개
 	
-	void removeCard() {
+	void function() {
 		//마지막 블록 버리기, 이때 choose에 game의 마지막 블럭 넣어줘야함
 		for(int i=0;i<num_block;i++)
 		{
@@ -266,7 +276,7 @@ class DownCard extends ActionCard {
 	DownCard() {this.num_thiscard = 1; } //처음에 주어진 카드 1개
 	
 	///GUI/// 이때 화면에서 클릭한 블럭이 Block형으로 choose_block 매개변수로 들어가게끔 할 수 있나?
-	void downCard( Block choose_block) {
+	void function() {
 		//선택한 블록 마지막 순서로 바꾸기, 선택한 블록 매개변수로
 		int choose_block_order = choose_block.order;
 		for(int i=0;i<num_block;i++) {
@@ -298,7 +308,7 @@ class UpOne extends ActionCard {
 	UpOne() { System.out.println("upone"); this.num_thiscard = 2; } //처음에 주어진 카드 2개
 
 	///GUI/// 이때 화면에서 클릭한 블럭이 Block형으로 choose_block 매개변수로 들어가게끔 할 수 있나?
-	void upOne(Block choose_block) {
+	void function() {
 		//선택한 블록 위로 1칸 올리기
 		int choose_block_order = choose_block.order;
 		for(int i=0;i<num_block;i++) {
@@ -336,7 +346,7 @@ class UpTwo extends ActionCard {
 	UpTwo() { this.num_thiscard = 1; } //처음에 주어진 카드 1개
 	
 	///GUI/// 이때 화면에서 클릭한 블럭이 Block형으로 choose_block 매개변수로 들어가게끔 할 수 있나?
-	void upTwo(Block choose_block) {
+	void function() {
 		//선택한 블록 위로 2칸 올리기
 		int choose_block_order = choose_block.order;
 		for(int i=0;i<num_block;i++) {
@@ -374,7 +384,7 @@ class UpThree extends ActionCard {
 	UpThree() { this.num_thiscard = 1; } //처음에 주어진 카드 1개
 	
 	///GUI/// 이때 화면에서 클릭한 블럭이 Block형으로 choose_block 매개변수로 들어가게끔 할 수 있나?
-	void upThree(Block choose_block) {
+	void function() {
 		//선택한 블록 위로 3칸 올리기
 		int choose_block_order = choose_block.order;
 		for(int i=0;i<num_block;i++) {
