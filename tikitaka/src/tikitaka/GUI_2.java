@@ -394,7 +394,7 @@ public class GUI_2 extends JFrame {
 	//blocks button set
 	//a가 블럭 순서, i가 포문 갯수
 	public void blocks_set(Game game, int a, int i) {
-		int height=30+74*(9-a);
+		int height=30+74*(a-1);
 		if(game.block[i].exist) {   ////블럭이 존재한다면 만들어주도록 추가
 			switch(i) {
 	    	case 0:
@@ -526,15 +526,7 @@ public class GUI_2 extends JFrame {
 				public void mousePressed(MouseEvent e) {
 					//choose a block
 					background=new ImageIcon(Main.class.getResource("../images/mainBackground.png")).getImage();
-					//backButton.setVisible(false);
-					boolean flag= false;
-					chooseBlock(game, flag); //현재 상황에 맞춰 남은 블럭 버튼들 보여주기 
-					game.current_player.action_card.upone.function(game); //함수 내에서 해당 카드 기능 실행하기
-					for(int i=0;i<9;i++) { //액션카드 기능 반영하여 다시 블럭 셋팅
-						blocks_set(game, game.block[i].order, i); //존재하면 set하게끔 바꿔주기 추가..?
-					}
-					actionCheck.setVisible(true);//다시 액션카드 open버튼 on
-					missionCheck.setVisible(true);
+					chooseBlock(game, "upone"); //현재 상황에 맞춰 남은 블럭 버튼들 보여주기 
 				}
 			});
 			add(ac_UpOneButton);
@@ -548,14 +540,7 @@ public class GUI_2 extends JFrame {
 				public void mousePressed(MouseEvent e) {
 					//choose a block
 					background=new ImageIcon(Main.class.getResource("../images/mainBackground.png")).getImage();
-					boolean flag= false;
-					chooseBlock(game, flag);//현재 상황에 맞춰 남은 블럭 버튼들 보여주기 
-					game.current_player.action_card.uptwo.function(game); //함수 내에서 해당 카드 기능 실행하기
-					for(int i=0;i<9;i++) { //액션카드 기능 반영하여 다시 블럭 셋팅
-						blocks_set(game, game.block[i].order, i);
-					}
-					actionCheck.setVisible(true);//다시 액션카드 open버튼 on
-					missionCheck.setVisible(true);
+					chooseBlock(game, "uptwo");//현재 상황에 맞춰 남은 블럭 버튼들 보여주기 
 				}
 			});
 			add(ac_UpTwoButton);
@@ -569,21 +554,14 @@ public class GUI_2 extends JFrame {
 				public void mousePressed(MouseEvent e) {
 					//choose a block
 					background=new ImageIcon(Main.class.getResource("../images/mainBackground.png")).getImage();
-					boolean flag= false;
-					chooseBlock(game, flag); //현재 상황에 맞춰 남은 블럭 버튼들 보여주기 
-					game.current_player.action_card.upthree.function(game);//함수 내에서 해당 카드 기능 실행하기
-					for(int i=0;i<9;i++) { //액션카드 기능 반영하여 다시 블럭 셋팅
-						blocks_set(game, game.block[i].order, i);
-					}
-					actionCheck.setVisible(true);//다시 액션카드 open버튼 on
-					missionCheck.setVisible(true);
+					chooseBlock(game, "upthree"); //현재 상황에 맞춰 남은 블럭 버튼들 보여주기 
 				}
 			});
 			add(ac_UpThreeButton);
 		}
 		
 		void ac_DownButton(Game game) {
-			ac_DownButton.setBounds(625, 400, 184, 286);
+			ac_DownButton.setBounds(830, 400, 184, 286);
 			ac_DownButton.setVisible(true);
 			ac_DownButton.addMouseListener(new MouseAdapter() {
 				@Override
@@ -591,20 +569,15 @@ public class GUI_2 extends JFrame {
 					//choose a block
 					background=new ImageIcon(Main.class.getResource("../images/mainBackground.png")).getImage();
 					boolean flag= false;
-					chooseBlock(game, flag); //현재 상황에 맞춰 남은 블럭 버튼들 보여주기 
+					chooseBlock(game, "down"); //현재 상황에 맞춰 남은 블럭 버튼들 보여주기 
 					game.current_player.action_card.down.function(game);//함수 내에서 해당 카드 기능 실행하기
-					for(int i=0;i<9;i++) { //액션카드 기능 반영하여 다시 블럭 셋팅
-						blocks_set(game, game.block[i].order, i);
-					}
-					actionCheck.setVisible(true);//다시 액션카드 open버튼 on
-					missionCheck.setVisible(true);
 				}
 			});
 			add(ac_DownButton);
 		}
 		
 		void ac_RemoveButton(Game game) {
-			ac_RemoveButton.setBounds(830, 400, 184, 286);
+			ac_RemoveButton.setBounds(625, 400, 184, 286);
 			ac_RemoveButton.setVisible(true);
 			ac_RemoveButton.addMouseListener(new MouseAdapter() {
 				@Override
@@ -616,7 +589,13 @@ public class GUI_2 extends JFrame {
 					backButton.setVisible(false); //뒤로가기 버튼 없애기
 					//액션카드 버튼들 안보이게끔
 					//애는 블럭 선택할 필요 없음. 무조건 마지막 블럭 버리기
-					game.current_player.action_card.remove.function(game);//함수 내에서 해당 카드 기능 실행하기
+					game.current_player.action_card.remove.function(game);
+					for(int o = 0; o<9; o++) { //9개의 색 블럭 확인
+						for(int j = 1; j<=game.num_block;j++) { //남은 갯수 만큼의 등수 확인
+							if(game.block[o].exist) {//이 블럭 살아 있니
+								if(game.block[o].order == j) {
+									System.out.println("make block["+o+"] ("+j+")");
+								}}}}
 					for(int i=0;i<9;i++) { //액션카드 기능 반영하여 다시 블럭 셋팅
 						blocks_set(game, game.block[i].order, i);
 					}
@@ -626,10 +605,11 @@ public class GUI_2 extends JFrame {
 			});
 			add(ac_RemoveButton);
 		}
+
 		
 		//유진: 액션카드 선택 후 남아있는 블럭들 중에서 선택할 수 있도록 블럭을 버튼으로 만들기
 		//남아있는 블럭인지 확인 후 버튼 생성
-		void chooseBlock(Game game, boolean flag) {
+		void chooseBlock(Game game, String function) {
 			ac_UpOneButton.setVisible(false); ac_UpTwoButton.setVisible(false); 
 			ac_UpThreeButton.setVisible(false); ac_DownButton.setVisible(false); ac_RemoveButton.setVisible(false);
 			
@@ -639,17 +619,17 @@ public class GUI_2 extends JFrame {
 				for(int j = 1; j<=game.num_block;j++) { //남은 갯수 만큼의 등수 확인
 					if(game.block[i].exist) {//이 블럭 살아 있니
 						if(game.block[i].order == j) {
-							height = 30+74*(9-j); //해당 등수의 위치 설정
+							height = 30+74*(j-1); //해당 등수의 위치 설정
 							temp_block = game.block[i];
 							System.out.println("make block["+i+"] ("+j+")");
-							makeBlock(game, temp_block, i, height, flag);//i에 따라 색 구분할 수 있게 매개변수로
+							makeBlock(game, temp_block, i, height, function);//i에 따라 색 구분할 수 있게 매개변수로
 						}
 					}
 				}
 			}
+			System.out.println("////");
 		}
-		void makeBlock(Game game, Block block, int index, int height, boolean flag) {
-			
+		void makeBlock(Game game, Block block, int index, int height, String function) {
 			if(index == 0) {
 				redBlockButton.setBounds(594, height, 78, 78);
 				redBlockButton.setVisible(true);
@@ -659,10 +639,21 @@ public class GUI_2 extends JFrame {
 						
 						//choose_block에 Block 변수로 넘겨주기
 						game.current_player.action_card.choose_block = block;
-						game.current_player.action_card.upone.function(game);//함수 내에서 해당 카드 기능 실행하기
+						if(function == "upone")
+							game.current_player.action_card.upone.function(game);//함수 내에서 해당 카드 기능 실행하기
+						else if(function == "uptwo")
+							game.current_player.action_card.uptwo.function(game);//함수 내에서 해당 카드 기능 실행하기
+						else if(function == "upthree")
+							game.current_player.action_card.upthree.function(game);//함수 내에서 해당 카드 기능 실행하기
+						else if(function == "down")
+							game.current_player.action_card.down.function(game);//함수 내에서 해당 카드 기능 실행하기
+					
 						for(int i=0;i<9;i++) { //액션카드 기능 반영하여 다시 블럭 셋팅
 							blocks_set(game, game.block[i].order, i);
 						}
+						actionCheck.setVisible(true);//다시 액션카드 open버튼 on
+						missionCheck.setVisible(true);
+
 					}
 				});
 				add(redBlockButton);
@@ -676,7 +667,20 @@ public class GUI_2 extends JFrame {
 						
 						//매개변수 넘겨주기
 						game.current_player.action_card.choose_block = block;
-						game.current_player.action_card.upone.function(game);//함수 내에서 해당 카드 기능 실행하기
+						if(function == "upone")
+							game.current_player.action_card.upone.function(game);//함수 내에서 해당 카드 기능 실행하기
+						else if(function == "uptwo")
+							game.current_player.action_card.uptwo.function(game);//함수 내에서 해당 카드 기능 실행하기
+						else if(function == "upthree")
+							game.current_player.action_card.upthree.function(game);//함수 내에서 해당 카드 기능 실행하기
+						else if(function == "down")
+							game.current_player.action_card.down.function(game);//함수 내에서 해당 카드 기능 실행하기
+					
+						for(int i=0;i<9;i++) { //액션카드 기능 반영하여 다시 블럭 셋팅
+							blocks_set(game, game.block[i].order, i);
+						}
+						actionCheck.setVisible(true);//다시 액션카드 open버튼 on
+						missionCheck.setVisible(true);
 					}
 				});
 				add(orangeBlockButton);
@@ -689,6 +693,20 @@ public class GUI_2 extends JFrame {
 					public void mousePressed(MouseEvent e) {
 						//매개변수 넘겨주기
 						game.current_player.action_card.choose_block = block;
+						if(function == "upone")
+							game.current_player.action_card.upone.function(game);//함수 내에서 해당 카드 기능 실행하기
+						else if(function == "uptwo")
+							game.current_player.action_card.uptwo.function(game);//함수 내에서 해당 카드 기능 실행하기
+						else if(function == "upthree")
+							game.current_player.action_card.upthree.function(game);//함수 내에서 해당 카드 기능 실행하기
+						else if(function == "down")
+							game.current_player.action_card.down.function(game);//함수 내에서 해당 카드 기능 실행하기
+					
+						for(int i=0;i<9;i++) { //액션카드 기능 반영하여 다시 블럭 셋팅
+							blocks_set(game, game.block[i].order, i);
+						}
+						actionCheck.setVisible(true);//다시 액션카드 open버튼 on
+						missionCheck.setVisible(true);
 					}
 				});
 				add(yellowBlockButton);
@@ -702,7 +720,20 @@ public class GUI_2 extends JFrame {
 						//매개변수 넘겨주기
 						background=new ImageIcon(Main.class.getResource("../images/instructionBack.png")).getImage();
 						game.current_player.action_card.choose_block = block;
-						game.current_player.action_card.upone.function(game);//함수 내에서 해당 카드 기능 실행하기
+						if(function == "upone")
+							game.current_player.action_card.upone.function(game);//함수 내에서 해당 카드 기능 실행하기
+						else if(function == "uptwo")
+							game.current_player.action_card.uptwo.function(game);//함수 내에서 해당 카드 기능 실행하기
+						else if(function == "upthree")
+							game.current_player.action_card.upthree.function(game);//함수 내에서 해당 카드 기능 실행하기
+						else if(function == "down")
+							game.current_player.action_card.down.function(game);//함수 내에서 해당 카드 기능 실행하기
+					
+						for(int i=0;i<9;i++) { //액션카드 기능 반영하여 다시 블럭 셋팅
+							blocks_set(game, game.block[i].order, i);
+						}
+						actionCheck.setVisible(true);//다시 액션카드 open버튼 on
+						missionCheck.setVisible(true);
 						
 					}
 				});
@@ -716,6 +747,20 @@ public class GUI_2 extends JFrame {
 					public void mousePressed(MouseEvent e) {
 						//매개변수 넘겨주기
 						game.current_player.action_card.choose_block = block;
+						if(function == "upone")
+							game.current_player.action_card.upone.function(game);//함수 내에서 해당 카드 기능 실행하기
+						else if(function == "uptwo")
+							game.current_player.action_card.uptwo.function(game);//함수 내에서 해당 카드 기능 실행하기
+						else if(function == "upthree")
+							game.current_player.action_card.upthree.function(game);//함수 내에서 해당 카드 기능 실행하기
+						else if(function == "down")
+							game.current_player.action_card.down.function(game);//함수 내에서 해당 카드 기능 실행하기
+					
+						for(int i=0;i<9;i++) { //액션카드 기능 반영하여 다시 블럭 셋팅
+							blocks_set(game, game.block[i].order, i);
+						}
+						actionCheck.setVisible(true);//다시 액션카드 open버튼 on
+						missionCheck.setVisible(true);
 					}
 				});
 				add(skyBlockButton);
@@ -728,6 +773,20 @@ public class GUI_2 extends JFrame {
 					public void mousePressed(MouseEvent e) {
 						//매개변수 넘겨주기
 						game.current_player.action_card.choose_block = block;
+						if(function == "upone")
+							game.current_player.action_card.upone.function(game);//함수 내에서 해당 카드 기능 실행하기
+						else if(function == "uptwo")
+							game.current_player.action_card.uptwo.function(game);//함수 내에서 해당 카드 기능 실행하기
+						else if(function == "upthree")
+							game.current_player.action_card.upthree.function(game);//함수 내에서 해당 카드 기능 실행하기
+						else if(function == "down")
+							game.current_player.action_card.down.function(game);//함수 내에서 해당 카드 기능 실행하기
+					
+						for(int i=0;i<9;i++) { //액션카드 기능 반영하여 다시 블럭 셋팅
+							blocks_set(game, game.block[i].order, i);
+						}
+						actionCheck.setVisible(true);//다시 액션카드 open버튼 on
+						missionCheck.setVisible(true);
 					}
 				});
 				add(blueBlockButton);
@@ -740,6 +799,20 @@ public class GUI_2 extends JFrame {
 					public void mousePressed(MouseEvent e) {
 						//매개변수 넘겨주기
 						game.current_player.action_card.choose_block = block;
+						if(function == "upone")
+							game.current_player.action_card.upone.function(game);//함수 내에서 해당 카드 기능 실행하기
+						else if(function == "uptwo")
+							game.current_player.action_card.uptwo.function(game);//함수 내에서 해당 카드 기능 실행하기
+						else if(function == "upthree")
+							game.current_player.action_card.upthree.function(game);//함수 내에서 해당 카드 기능 실행하기
+						else if(function == "down")
+							game.current_player.action_card.down.function(game);//함수 내에서 해당 카드 기능 실행하기
+					
+						for(int i=0;i<9;i++) { //액션카드 기능 반영하여 다시 블럭 셋팅
+							blocks_set(game, game.block[i].order, i);
+						}
+						actionCheck.setVisible(true);//다시 액션카드 open버튼 on
+						missionCheck.setVisible(true);
 					}
 				});
 				add(purpleBlockButton);
@@ -752,6 +825,20 @@ public class GUI_2 extends JFrame {
 					public void mousePressed(MouseEvent e) {
 						//매개변수 넘겨주기
 						game.current_player.action_card.choose_block = block;
+						if(function == "upone")
+							game.current_player.action_card.upone.function(game);//함수 내에서 해당 카드 기능 실행하기
+						else if(function == "uptwo")
+							game.current_player.action_card.uptwo.function(game);//함수 내에서 해당 카드 기능 실행하기
+						else if(function == "upthree")
+							game.current_player.action_card.upthree.function(game);//함수 내에서 해당 카드 기능 실행하기
+						else if(function == "down")
+							game.current_player.action_card.down.function(game);//함수 내에서 해당 카드 기능 실행하기
+					
+						for(int i=0;i<9;i++) { //액션카드 기능 반영하여 다시 블럭 셋팅
+							blocks_set(game, game.block[i].order, i);
+						}
+						actionCheck.setVisible(true);//다시 액션카드 open버튼 on
+						missionCheck.setVisible(true);
 					}
 				});
 				add(pinkBlockButton);
@@ -764,6 +851,20 @@ public class GUI_2 extends JFrame {
 					public void mousePressed(MouseEvent e) {
 						//매개변수 넘겨주기
 						game.current_player.action_card.choose_block = block;
+						if(function == "upone")
+							game.current_player.action_card.upone.function(game);//함수 내에서 해당 카드 기능 실행하기
+						else if(function == "uptwo")
+							game.current_player.action_card.uptwo.function(game);//함수 내에서 해당 카드 기능 실행하기
+						else if(function == "upthree")
+							game.current_player.action_card.upthree.function(game);//함수 내에서 해당 카드 기능 실행하기
+						else if(function == "down")
+							game.current_player.action_card.down.function(game);//함수 내에서 해당 카드 기능 실행하기
+					
+						for(int i=0;i<9;i++) { //액션카드 기능 반영하여 다시 블럭 셋팅
+							blocks_set(game, game.block[i].order, i);
+						}
+						actionCheck.setVisible(true);//다시 액션카드 open버튼 on
+						missionCheck.setVisible(true);
 					}
 				});
 				add(grayBlockButton);

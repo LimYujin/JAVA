@@ -245,26 +245,19 @@ class RemoveCard {
 		//마지막 블록 버리기, 이때 choose에 game의 마지막 블럭 넣어줘야함
 		for(int i=0;i<game.num_block;i++)
 		{
-			if(game.block[i].order == game.num_block+1) //마지막블록인지 확인
+			if(game.block[i].order == game.num_block) //마지막블록인지 확인
 			{
 				game.block[i].exist = false; //해당 블록 버려짐
-				this.num_thiscard --; //해당 액션 카드 갯수 -1
-				game.current_player.action_card.num_card--; //전체 액션 카드 갯수 -1
+				System.out.println("block[" + i +"] is last block");
 				///GUI///바뀐 블럭과 남아있는 액션카드 반영
-				game.current_player.action_card.next_turn(game); //다음 플레이어로 넘어가기
-				game.num_block--;
 			}
 		}
-		System.out.println("/////");
+		this.num_thiscard --; //해당 액션 카드 갯수 -1
+		game.current_player.action_card.num_card--; //전체 액션 카드 갯수 -1
+		game.current_player.action_card.next_turn(game); //다음 플레이어로 넘어가기
+		game.num_block--;
+		System.out.println("removeCard" + game.num_block);
 	}
-	
-	boolean possible() { 
-		//이 액션 카드 사용 가능한지 확인 후 리턴 
-		if(this.num_thiscard > 0) //남아있는 카드인지 확인
-			return true; 
-		else return false;
-		//얘는 나머지 요소는 항상 true
-		} 
 }
 
 class DownCard {
@@ -277,28 +270,32 @@ class DownCard {
 	void function(Game game) {
 		//선택한 블록 마지막 순서로 바꾸기, 선택한 블록 매개변수로
 		int choose_block_order = game.current_player.action_card.choose_block.order;
+		Block[] temp = new Block[9];
+		for(int i=0 ; i<9;i++)
+			temp[i] = null;
 		for(int i=0;i<9;i++) {
 			if(game.block[i].exist) {
 				//선택한 블록 아래 있는 것들 한 칸씩 위로
 				if(game.block[i].order > choose_block_order) {
-					game.block[i].order++;
-				}
-				//선택한 블록 맨 아래로
-				else if(game.block[i].order == choose_block_order) {
-					game.block[i].order = game.num_block;
+					temp[i] = game.block[i];
 				}
 			}
 		}
+		for(int i=0;i<9;i++) {
+			if(temp[i] != null) temp[i].order++; //선택한 블록 아래 있는 것들 한 칸씩 위로
+		}
+		game.current_player.action_card.choose_block.order = game.num_block;
 		this.num_thiscard --; //해당 액션 카드 갯수 -1
 		game.current_player.action_card.num_card--; //전체 액션 카드 갯수 -1
 		///GUI///바뀐 블럭과 남아있는 액션카드 반영
 		game.current_player.action_card.next_turn(game); //다음 순서로 넘어가기
 	}
 	
-	boolean possible() { 
-		if(this.num_thiscard > 0) //남아있는 카드인지 확인
+	boolean possible(Game game) { 
+		if(game.current_player.action_card.choose_block.order < game.num_block) //마지막보다 위에 있는 블럭인지 확인
 			return true; 
-		else return false; } //얘는 나머지 요소는 항상 true
+		else return false;  //얘는 나머지 요소는 항상 true
+	}
 }
 
 class UpOne {
@@ -316,7 +313,7 @@ class UpOne {
 		Block temp2 = null; //위로 올라갈 블록
 		for(int i=0;i<game.num_block;i++) {
 			//선택한 블록 위의 블록 한 칸 아래로
-			if(game.block[i].order == choose_block_order+1) {
+			if(game.block[i].order == choose_block_order-1) {
 				temp1 = game.block[i];
 			}
 			//선택한 블록 한칸 위로
@@ -324,9 +321,9 @@ class UpOne {
 				temp2 = game.block[i];
 			}
 		}
-		temp1.order--;
+		temp1.order++;
 		System.out.println("UpOne: block[" + "temp1" + "] : " + temp1.order);
-		temp2.order++;
+		temp2.order--;
 		System.out.println("UpOne: block[" + "temp2" + "] : " +temp2.order);
 		this.num_thiscard --; //해당 액션 카드 갯수 -1
 		game.current_player.action_card.num_card--; //전체 액션 카드 갯수 -1
@@ -337,12 +334,9 @@ class UpOne {
 	
 	boolean possible(Game game) {
 		//가능한 조건인지 확인 후 리턴
-		if(this.num_thiscard > 0) {
-			if(game.current_player.action_card.choose_block.order > 1) {
-			//선택 블록의 순서가 1보다 큰지
-			return true;
-			}
-			else return false;
+		if(game.current_player.action_card.choose_block.order > 1) {
+		//선택 블록의 순서가 1보다 큰지
+		return true;
 		}
 		else return false;
 	}
@@ -357,16 +351,21 @@ class UpTwo {
 	void function(Game game) {
 		//선택한 블록 위로 2칸 올리기
 		int choose_block_order = game.current_player.action_card.choose_block.order;
+		Block temp1 = null; //1칸 내려갈 블록
+		Block temp2 = null; //1칸 내려갈 블록
+		Block temp3 = null; //2칸 올라갈 블록
 		for(int i=0;i<game.num_block;i++) {
 		//선택한 블록 위의 두 블록 한 칸씩 아래로
-			if(game.block[i].order == choose_block_order+1 | game.block[i].order == choose_block_order+2) {
-				game.block[i].order--;
-			}
-			//선택한 블록 2칸 위로
-			if(game.block[i].order == choose_block_order) {
-				game.block[i].order = game.block[i].order+2;
-			}
+			if(game.block[i].order == choose_block_order-1)  temp1 = game.block[i];
+			else if(game.block[i].order == choose_block_order-2) 	temp2 = game.block[i];
+			else if(game.block[i].order == choose_block_order) temp3 = game.block[i];
 		}
+		temp1.order++;
+		temp2.order++;
+		temp3.order = temp3.order-2;
+		System.out.println("UpTwo: block[" + "temp1" + "] : " +temp1.order);
+		System.out.println("UpTwo: block[" + "temp2" + "] : " +temp2.order);
+		System.out.println("UpTwo: block[" + "temp3" + "] : " +temp3.order);
 		this.num_thiscard --; //해당 액션 카드 갯수 -1
 		game.current_player.action_card.num_card--; //전체 액션 카드 갯수 -1
 		///GUI///바뀐 블럭과 남아있는 액션카드 반영
@@ -375,12 +374,9 @@ class UpTwo {
 		
 	boolean possible(Game game) {
 		//가능한 조건인지 확인 후 리턴
-		if(this.num_thiscard > 0) {
-			if(game.current_player.action_card.choose_block.order > 2) {
-			//선택 블록의 순서가 2보다 큰지
-			return true;
-			}
-			else return false;
+		if(game.current_player.action_card.choose_block.order > 2) {
+		//선택 블록의 순서가 2보다 큰지
+		return true;
 		}
 		else return false;
 	}
@@ -395,16 +391,25 @@ class UpThree {
 	void function(Game game) {
 		//선택한 블록 위로 3칸 올리기
 		int choose_block_order = game.current_player.action_card.choose_block.order;
+		Block temp1 = null; //1칸 내려갈 블록
+		Block temp2 = null; //1칸 내려갈 블록
+		Block temp3 = null; //1칸 올라갈 블록
+		Block temp4 = null; //3칸 올라갈 블록
 		for(int i=0;i<game.num_block;i++) {
-			//선택한 블록 위의 세 블록 한 칸씩 아래로
-			if(game.block[i].order >= choose_block_order+1 & game.block[i].order <= choose_block_order+3) {
-				game.block[i].order--;
-			}
-			//선택한 블록  3칸 위로
-			if(game.block[i].order == choose_block_order) {
-				game.block[i].order = game.block[i].order+3;
-			}
+		//선택한 블록 위의 두 블록 한 칸씩 아래로
+			if(game.block[i].order == choose_block_order-1)  temp1 = game.block[i];
+			else if(game.block[i].order == choose_block_order-2)	temp2 = game.block[i];
+			else if(game.block[i].order == choose_block_order-3) temp3 = game.block[i];
+			else if(game.block[i].order == choose_block_order) temp4 = game.block[i];
 		}
+		temp1.order++;
+		temp2.order++;
+		temp3.order++;
+		temp4.order = temp2.order-3;
+		System.out.println("UpThree: block[" + "temp1" + "] : " +temp1.order);
+		System.out.println("UpThree: block[" + "temp2" + "] : " +temp2.order);
+		System.out.println("UpThree: block[" + "temp3" + "] : " +temp3.order);
+		System.out.println("UpThree: block[" + "temp4" + "] : " +temp4.order);
 		this.num_thiscard --; //해당 액션 카드 갯수 -1
 		game.current_player.action_card.num_card--; //전체 액션 카드 갯수 -1
 		///GUI///바뀐 블럭과 남아있는 액션카드 반영
@@ -413,12 +418,9 @@ class UpThree {
 	
 	boolean possible(Game game) {
 		//가능한 조건인지 확인 후 리턴
-		if(this.num_thiscard > 0) {
-			if(game.current_player.action_card.choose_block.order > 3) {
-			//선택 블록의 순서가 3보다 큰지
-			return true;
-			}
-			else return false;
+		if(game.current_player.action_card.choose_block.order > 3) {
+		//선택 블록의 순서가 3보다 큰지
+		return true;
 		}
 		else return false;
 	}
