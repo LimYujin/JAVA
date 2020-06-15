@@ -67,6 +67,20 @@ class Game{
 		
 		System.out.println("game start!");
 	}
+	
+	void next_turn(Game game) {
+		//다음 플레이어 순서로 넘어가기
+		///GUI///로도 어떤 플레이어 순서인지 표시해주기
+		if(game.current_player == game.player1)	{
+			game.current_player = game.player2;
+			System.out.println("nextTrun : player1 -> player2");
+		}
+		else {
+			game.current_player = game.player1;
+			System.out.println("nextTrun : player2 -> player1");
+		}
+		
+	} 
 
 	void gameOver() {
 		//2명의 player가 카드를 모두 쓰는 순간 종료
@@ -227,12 +241,6 @@ class ActionCard {
 		this.num_card = 7;
 	}
 	
-	void next_turn(Game game) {
-		//다음 플레이어 순서로 넘어가기
-		///GUI///로도 어떤 플레이어 순서인지 표시해주기
-		if(game.current_player == game.player1)		game.current_player = game.player2;
-		else game.current_player = game.player2;
-	} 
 }
 
 class RemoveCard {
@@ -252,9 +260,9 @@ class RemoveCard {
 				///GUI///바뀐 블럭과 남아있는 액션카드 반영
 			}
 		}
-		this.num_thiscard --; //해당 액션 카드 갯수 -1
+		game.current_player.action_card.remove.num_thiscard --; //해당 액션 카드 갯수 -1
 		game.current_player.action_card.num_card--; //전체 액션 카드 갯수 -1
-		game.current_player.action_card.next_turn(game); //다음 플레이어로 넘어가기
+		game.next_turn(game); //다음 플레이어로 넘어가기
 		game.num_block--;
 		System.out.println("removeCard" + game.num_block);
 	}
@@ -282,13 +290,17 @@ class DownCard {
 			}
 		}
 		for(int i=0;i<9;i++) {
-			if(temp[i] != null) temp[i].order++; //선택한 블록 아래 있는 것들 한 칸씩 위로
+			if(temp[i] != null) {
+				temp[i].order--; //선택한 블록 아래 있는 것들 한 칸씩 위로
+				System.out.println("temp[" +i+"] order :" + temp[i].order);
+			}
 		}
 		game.current_player.action_card.choose_block.order = game.num_block;
-		this.num_thiscard --; //해당 액션 카드 갯수 -1
+		System.out.println("down block to "+game.num_block);
+		game.current_player.action_card.down.num_thiscard --; //해당 액션 카드 갯수 -1
 		game.current_player.action_card.num_card--; //전체 액션 카드 갯수 -1
 		///GUI///바뀐 블럭과 남아있는 액션카드 반영
-		game.current_player.action_card.next_turn(game); //다음 순서로 넘어가기
+		game.next_turn(game); //다음 순서로 넘어가기
 	}
 	
 	boolean possible(Game game) { 
@@ -306,7 +318,7 @@ class UpOne {
 
 	///GUI/// 이때 화면에서 클릭한 블럭이 Block형으로 choose_block 매개변수로 들어가게끔 할 수 있나?
 	void function(Game game) {
-		System.out.println("Who's turn : " + game.current_player.id);
+		//System.out.println("Who's turn : " + game.current_player.id);
 		//선택한 블록 위로 1칸 올리기
 		int choose_block_order = game.current_player.action_card.choose_block.order;
 		Block temp1 = null; //밑으로 내릴 블록
@@ -325,10 +337,10 @@ class UpOne {
 		System.out.println("UpOne: block[" + "temp1" + "] : " + temp1.order);
 		temp2.order--;
 		System.out.println("UpOne: block[" + "temp2" + "] : " +temp2.order);
-		this.num_thiscard --; //해당 액션 카드 갯수 -1
+		game.current_player.action_card.upone.num_thiscard --; //해당 액션 카드 갯수 -1
 		game.current_player.action_card.num_card--; //전체 액션 카드 갯수 -1
 		///GUI///바뀐 블럭과 남아있는 액션카드 반영
-		game.current_player.action_card.next_turn(game); //다음 순서로 넘어가기
+		game.next_turn(game); //다음 순서로 넘어가기
 		System.out.println("UpOne////");
 	}
 	
@@ -366,10 +378,10 @@ class UpTwo {
 		System.out.println("UpTwo: block[" + "temp1" + "] : " +temp1.order);
 		System.out.println("UpTwo: block[" + "temp2" + "] : " +temp2.order);
 		System.out.println("UpTwo: block[" + "temp3" + "] : " +temp3.order);
-		this.num_thiscard --; //해당 액션 카드 갯수 -1
+		game.current_player.action_card.uptwo.num_thiscard --; //해당 액션 카드 갯수 -1
 		game.current_player.action_card.num_card--; //전체 액션 카드 갯수 -1
 		///GUI///바뀐 블럭과 남아있는 액션카드 반영
-		game.current_player.action_card.next_turn(game);  //다음 순서로 넘어가기
+		game.next_turn(game);  //다음 순서로 넘어가기
 	}
 		
 	boolean possible(Game game) {
@@ -410,10 +422,10 @@ class UpThree {
 		System.out.println("UpThree: block[" + "temp2" + "] : " +temp2.order);
 		System.out.println("UpThree: block[" + "temp3" + "] : " +temp3.order);
 		System.out.println("UpThree: block[" + "temp4" + "] : " +temp4.order);
-		this.num_thiscard --; //해당 액션 카드 갯수 -1
+		game.current_player.action_card.upthree.num_thiscard --; //해당 액션 카드 갯수 -1
 		game.current_player.action_card.num_card--; //전체 액션 카드 갯수 -1
 		///GUI///바뀐 블럭과 남아있는 액션카드 반영
-		game.current_player.action_card.next_turn(game); //다음 순서로 넘어가기
+		game.next_turn(game); //다음 순서로 넘어가기
 	}
 	
 	boolean possible(Game game) {
