@@ -400,46 +400,55 @@ public class GUI_2 extends JFrame {
 	    	case 0:
 	    		redBlockButton.setBounds(594,height,78,78);;
 	    		redBlockButton.setVisible(true);
+	    		System.out.println("red visible : " + a);
 	    		add(redBlockButton);
 	    		break;
 	    	case 1:
 	    		orangeBlockButton.setBounds(594,height,78,78);
 	    		orangeBlockButton.setVisible(true);
+	    		System.out.println("orange visible: " + a);
 	    		add(orangeBlockButton);
 	    		break;
 	    	case 2:
 	    		yellowBlockButton.setBounds(594,height,78,78);
 	    		yellowBlockButton.setVisible(true);
+	    		System.out.println("yellow visible: " + a);
 	    		add(yellowBlockButton);
 	    		break;
 	    	case 3:
 	    		greenBlockButton.setBounds(594,height,78,78);
 	    		greenBlockButton.setVisible(true);
+	    		System.out.println("green visible: " + a);
 	    		add(greenBlockButton);
 	    		break;
 	    	case 4:
 	    		skyBlockButton.setBounds(594,height,78,78);
 	    		skyBlockButton.setVisible(true);
+	    		System.out.println("sky visible: " + a);
 	    		add(skyBlockButton);
 	    		break;
 	    	case 5:
 	    		blueBlockButton.setBounds(594,height,78,78);
 	    		blueBlockButton.setVisible(true);
+	    		System.out.println("blue visible: " + a);
 	    		add(blueBlockButton);
 	    		break;
 	    	case 6:
 	    		purpleBlockButton.setBounds(594,height,78,78);
 	    		purpleBlockButton.setVisible(true);
+	    		System.out.println("purple visible: " + a);
 	    		add(purpleBlockButton);
 	    		break;
 	    	case 7:
 	    		pinkBlockButton.setBounds(594,height,78,78);
 	    		pinkBlockButton.setVisible(true);
+	    		System.out.println("pink visible: " + a);
 	    		add(pinkBlockButton);
 	    		break;
 	    	case 8:
 	    		grayBlockButton.setBounds(594,height,78,78);
 	    		grayBlockButton.setVisible(true);
+	    		System.out.println("gray visible: " + a);
 	    		add(grayBlockButton);
 	    		break;
 			}
@@ -718,7 +727,6 @@ public class GUI_2 extends JFrame {
 					@Override
 					public void mousePressed(MouseEvent e) {
 						//매개변수 넘겨주기
-						background=new ImageIcon(Main.class.getResource("../images/instructionBack.png")).getImage();
 						game.current_player.action_card.choose_block = block;
 						if(function == "upone")
 							game.current_player.action_card.upone.function(game);//함수 내에서 해당 카드 기능 실행하기

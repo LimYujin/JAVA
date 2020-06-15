@@ -290,10 +290,7 @@ class DownCard {
 			}
 		}
 		for(int i=0;i<9;i++) {
-			if(temp[i] != null) {
-				temp[i].order--; //선택한 블록 아래 있는 것들 한 칸씩 위로
-				System.out.println("temp[" +i+"] order :" + temp[i].order);
-			}
+			if(temp[i] != null) 	temp[i].order--; //선택한 블록 아래 있는 것들 한 칸씩 위로
 		}
 		game.current_player.action_card.choose_block.order = game.num_block;
 		System.out.println("down block to "+game.num_block);
@@ -321,15 +318,16 @@ class UpOne {
 		//System.out.println("Who's turn : " + game.current_player.id);
 		//선택한 블록 위로 1칸 올리기
 		int choose_block_order = game.current_player.action_card.choose_block.order;
+		System.out.println("UpOne: choose_block : " +game.current_player.action_card.choose_block.order);
 		Block temp1 = null; //밑으로 내릴 블록
 		Block temp2 = null; //위로 올라갈 블록
-		for(int i=0;i<game.num_block;i++) {
+		for(int i=0;i<9;i++) {
 			//선택한 블록 위의 블록 한 칸 아래로
 			if(game.block[i].order == choose_block_order-1) {
 				temp1 = game.block[i];
 			}
 			//선택한 블록 한칸 위로
-			if(game.block[i].order == choose_block_order) {
+			else if(game.block[i].order == choose_block_order) {
 				temp2 = game.block[i];
 			}
 		}
@@ -363,13 +361,14 @@ class UpTwo {
 	void function(Game game) {
 		//선택한 블록 위로 2칸 올리기
 		int choose_block_order = game.current_player.action_card.choose_block.order;
+		System.out.println("UpTwo: choose_block : " +game.current_player.action_card.choose_block.order);
 		Block temp1 = null; //1칸 내려갈 블록
 		Block temp2 = null; //1칸 내려갈 블록
 		Block temp3 = null; //2칸 올라갈 블록
-		for(int i=0;i<game.num_block;i++) {
+		for(int i=0;i<9;i++) {
 		//선택한 블록 위의 두 블록 한 칸씩 아래로
 			if(game.block[i].order == choose_block_order-1)  temp1 = game.block[i];
-			else if(game.block[i].order == choose_block_order-2) 	temp2 = game.block[i];
+			else if(game.block[i].order == choose_block_order-2) temp2 = game.block[i];
 			else if(game.block[i].order == choose_block_order) temp3 = game.block[i];
 		}
 		temp1.order++;
@@ -403,11 +402,12 @@ class UpThree {
 	void function(Game game) {
 		//선택한 블록 위로 3칸 올리기
 		int choose_block_order = game.current_player.action_card.choose_block.order;
+		System.out.println("UpThree: choose_block : " +game.current_player.action_card.choose_block.order);
 		Block temp1 = null; //1칸 내려갈 블록
 		Block temp2 = null; //1칸 내려갈 블록
 		Block temp3 = null; //1칸 올라갈 블록
 		Block temp4 = null; //3칸 올라갈 블록
-		for(int i=0;i<game.num_block;i++) {
+		for(int i=0;i<9;i++) {
 		//선택한 블록 위의 두 블록 한 칸씩 아래로
 			if(game.block[i].order == choose_block_order-1)  temp1 = game.block[i];
 			else if(game.block[i].order == choose_block_order-2)	temp2 = game.block[i];
@@ -417,7 +417,7 @@ class UpThree {
 		temp1.order++;
 		temp2.order++;
 		temp3.order++;
-		temp4.order = temp2.order-3;
+		temp4.order = temp4.order-3;
 		System.out.println("UpThree: block[" + "temp1" + "] : " +temp1.order);
 		System.out.println("UpThree: block[" + "temp2" + "] : " +temp2.order);
 		System.out.println("UpThree: block[" + "temp3" + "] : " +temp3.order);
