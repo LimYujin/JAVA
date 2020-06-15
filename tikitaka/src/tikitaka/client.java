@@ -18,13 +18,6 @@ import java.util.Vector;
 
 
 public class client extends JFrame implements ActionListener{
-	/*Game game = new Game();
-	game.game_init();
-
-	GUI_2 gui = new GUI_2(game);
-*/	
-	//game set GUI
-	//public void GUI_2 extends JFrame {	
 		//이미지 변수
 		private Image screenImage;
 		private Graphics screenGraphic;
@@ -57,16 +50,18 @@ public class client extends JFrame implements ActionListener{
 		private ImageIcon backButtonBasicImage=new ImageIcon(Main.class.getResource("../images/back.png"));
 		private JButton backButton=new JButton(backButtonBasicImage);//make go_back button
 		
+		Game game;
+		GUI_2 gui;
 		
 	int port = 8800;
 	String playerName, playerScore, playerIdx;
 	boolean gameStartr;
 	
 	public client() {
-		Game game = new Game();
+		game = new Game();
 		game.game_init();
 
-		GUI_2 gui = new GUI_2(game);
+		gui = new GUI_2(game);
 		///여기에 GUI
 		setUndecorated(true);//not to show original menu bar
 		setTitle("TikiTaka Game");
@@ -261,7 +256,6 @@ public class client extends JFrame implements ActionListener{
 			new Thread(sender).start();
 			new Thread(receiver).start();
 			
-			
 		}catch(UnknownHostException uh) {
 			JOptionPane.showMessageDialog(null, "호스트를 찾지 못했습니다.", "ERROR", JOptionPane.ERROR_MESSAGE);
 		}catch(IOException io){
@@ -301,8 +295,60 @@ public class client extends JFrame implements ActionListener{
 		}
 		public void actionPerformed(ActionEvent e) {
 			//보드판 안에 있는 버튼들에 대해서
-			
-			//if(e.getSource() == Mission_button) {}
+			if(e.getSource() == gui.redBlockButton) {
+				try{
+					dos.writeUTF(game.block[0].color);
+					dos.writeInt(game.block[0].order);
+				}catch(IOException e1) {}
+			}
+			if(e.getSource() == gui.orangeBlockButton) {
+				try{
+					dos.writeUTF(game.block[1].color);
+					dos.writeInt(game.block[1].order);
+				}catch(IOException e1) {}
+			}
+			if(e.getSource() == gui.yellowBlockButton) {
+				try{
+					dos.writeUTF(game.block[2].color);
+					dos.writeInt(game.block[2].order);
+				}catch(IOException e1) {}
+			}
+			if(e.getSource() == gui.greenBlockButton) {
+				try{
+					dos.writeUTF(game.block[3].color);
+					dos.writeInt(game.block[3].order);
+				}catch(IOException e1) {}
+			}
+			if(e.getSource() == gui.skyBlockButton) {
+				try{
+					dos.writeUTF(game.block[4].color);
+					dos.writeInt(game.block[4].order);
+				}catch(IOException e1) {}
+			}
+			if(e.getSource() == gui.blueBlockButton) {
+				try{
+					dos.writeUTF(game.block[5].color);
+					dos.writeInt(game.block[5].order);
+				}catch(IOException e1) {}
+			}
+			if(e.getSource() == gui.purpleBlockButton) {
+				try{
+					dos.writeUTF(game.block[6].color);
+					dos.writeInt(game.block[6].order);
+				}catch(IOException e1) {}
+			}
+			if(e.getSource() == gui.pinkBlockButton) {
+				try{
+					dos.writeUTF(game.block[7].color);
+					dos.writeInt(game.block[7].order);
+				}catch(IOException e1) {}
+			}
+			if(e.getSource() == gui.grayBlockButton) {
+				try{
+					dos.writeUTF(game.block[8].color);
+					dos.writeInt(game.block[8].order);
+				}catch(IOException e1) {}
+			}
 		}
 		
 
@@ -371,6 +417,17 @@ public class client extends JFrame implements ActionListener{
 		
 		public void run() {
 			while(dis != null) {
+				try {
+					String color = dis.readUTF();
+					int order = dis.readInt();
+					if(color == "red") {
+						game.block[0].order = order;	
+					}
+					for(int i=0;i<9;i++) {
+						gui.blocks_set(game, game.block[i].order, i);
+					}
+				}catch(IOException e2) {}
+				
 			}
 		}
 	}
