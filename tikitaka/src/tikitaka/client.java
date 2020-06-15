@@ -4,57 +4,69 @@ import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
 import javax.swing.border.*;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.BufferedInputStream;
+import javazoom.jl.player.Player;
 import javax.sound.sampled.*;
 import java.io.*;
 import java.net.*;
 import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.Random;
 import java.util.Vector;
-/*
+
+
 public class client extends JFrame implements ActionListener{
-	private Image screenImage;
-	private Graphics screenGraphic;
-	
-	private Image background=new ImageIcon(Main.class.getResource("../images/fp_title.jpg")).getImage();//initialize background image
-	private JLabel menuBar=new JLabel(new ImageIcon(Main.class.getResource("../images/menuBar.png")));//initialize menu bar image
-	
-	//exit button(화면 끄는 x 버튼)
-	//each button image has 2 state : running state(cursor 올린 상태), basic state
-	private ImageIcon exitButtonEnteredImage=new ImageIcon(Main.class.getResource("../images/exitbuttonr.png"));//store image of exitbutton running
-	private ImageIcon exitButtonBasicImage=new ImageIcon(Main.class.getResource("../images/exitbutton.png"));//storre image of exit button basic state
-	private JButton exitButton=new JButton(exitButtonBasicImage);//make exit button
-	
-	//IN start page
-	//buttons
-	//each button image has 2 state : running state(cursor 올린 상태), basic state
-	private ImageIcon startButtonEnteredImage=new ImageIcon(Main.class.getResource("../images/startButtonr.png"));//store image of startbutton running
-	private ImageIcon startButtonBasicImage=new ImageIcon(Main.class.getResource("../images/startButton.png"));//store image of startbutton basic state
-	private ImageIcon quitButtonEnteredImage=new ImageIcon(Main.class.getResource("../images/quitButtonr.png"));//store image of quitbutton running
-	private ImageIcon quitButtonBasicImage=new ImageIcon(Main.class.getResource("../images/quitButton.png"));//store image of quitbutton basic state
-	private ImageIcon introductionButtonEnteredImage=new ImageIcon(Main.class.getResource("../images/introductionr.png"));//store image of how_to_play running
-	private ImageIcon introductionButtonBasicImage=new ImageIcon(Main.class.getResource("../images/introduction.png"));//store image of how_to_play basic state
-	private JButton startButton=new JButton(startButtonBasicImage);//make start button
-	private JButton quitButton=new JButton(quitButtonBasicImage);//make quit button
-	private JButton introductionButton=new JButton(introductionButtonBasicImage);//make how_to_play button
-	
-	//go-back(return) button(화면 뒤로 가기 버튼)
-	//each button image has 2 state : running state(cursor 올린 상태), basic state
-	private ImageIcon backButtonEnteredImage=new ImageIcon(Main.class.getResource("../images/backr.png"));
-	private ImageIcon backButtonBasicImage=new ImageIcon(Main.class.getResource("../images/back.png"));
-	private JButton backButton=new JButton(backButtonBasicImage);//make go_back button
-	
-	
-	//used for location of cursor
-		private int mouseX, mouseY;
+	/*Game game = new Game();
+	game.game_init();
+
+	GUI_2 gui = new GUI_2(game);
+*/	
+	//game set GUI
+	//public void GUI_2 extends JFrame {	
+		//이미지 변수
+		private Image screenImage;
+		private Graphics screenGraphic;
 		
-		private int i = 0;
-		private final static int DELAY = 10000;
-	//////////
+		private Image background=new ImageIcon(Main.class.getResource("../images/fp_title.jpg")).getImage();//initialize background image
+		private JLabel menuBar=new JLabel(new ImageIcon(Main.class.getResource("../images/menuBar.png")));//initialize menu bar image
+		
+		//exit button(화면 끄는 x 버튼)
+		//each button image has 2 state : running state(cursor 올린 상태), basic state
+		private ImageIcon exitButtonEnteredImage=new ImageIcon(Main.class.getResource("../images/exitbuttonr.png"));//store image of exitbutton running
+		private ImageIcon exitButtonBasicImage=new ImageIcon(Main.class.getResource("../images/exitbutton.png"));//store image of exit button basic state
+		private JButton exitButton=new JButton(exitButtonBasicImage);//make exit button
+		
+		//IN start page
+		//buttons
+		//each button image has 2 state : running state(cursor 올린 상태), basic state
+		private ImageIcon startButtonEnteredImage=new ImageIcon(Main.class.getResource("../images/startButtonr.png"));//store image of startbutton running
+		private ImageIcon startButtonBasicImage=new ImageIcon(Main.class.getResource("../images/startButton.png"));//store image of startbutton basic state
+		private ImageIcon quitButtonEnteredImage=new ImageIcon(Main.class.getResource("../images/quitButtonr.png"));//store image of quitbutton running
+		private ImageIcon quitButtonBasicImage=new ImageIcon(Main.class.getResource("../images/quitButton.png"));//store image of quitbutton basic state
+		private ImageIcon introductionButtonEnteredImage=new ImageIcon(Main.class.getResource("../images/introductionr.png"));//store image of how_to_play running
+		private ImageIcon introductionButtonBasicImage=new ImageIcon(Main.class.getResource("../images/introduction.png"));//store image of how_to_play basic state
+		private JButton startButton=new JButton(startButtonBasicImage);//make start button
+		private JButton quitButton=new JButton(quitButtonBasicImage);//make quit button
+		private JButton introductionButton=new JButton(introductionButtonBasicImage);//make how_to_play button
+		
+		//go-back(return) button(화면 뒤로 가기 버튼)
+		//each button image has 2 state : running state(cursor 올린 상태), basic state
+		private ImageIcon backButtonEnteredImage=new ImageIcon(Main.class.getResource("../images/backr.png"));
+		private ImageIcon backButtonBasicImage=new ImageIcon(Main.class.getResource("../images/back.png"));
+		private JButton backButton=new JButton(backButtonBasicImage);//make go_back button
+		
 		
 	int port = 8800;
 	String playerName, playerScore, playerIdx;
 	boolean gameStartr;
 	
 	public client() {
+		Game game = new Game();
+		game.game_init();
+
+		GUI_2 gui = new GUI_2(game);
 		///여기에 GUI
 		setUndecorated(true);//not to show original menu bar
 		setTitle("TikiTaka Game");
@@ -165,7 +177,6 @@ public class client extends JFrame implements ActionListener{
 			}
 		});
 		add(quitButton);
-
 		//introduction button; how_to_play
 		introductionButton.setBounds(790,500,250,75);
 		introductionButton.setBorderPainted(false);
@@ -288,20 +299,68 @@ public class client extends JFrame implements ActionListener{
 				dos.writeUTF(id); //id를 넘겨줌
 			}catch(IOException io){}
 		}
-
 		public void actionPerformed(ActionEvent e) {
 			//보드판 안에 있는 버튼들에 대해서
 			
 			//if(e.getSource() == Mission_button) {}
 		}
+		
 
 	}//MyPlayer
 	
+	class Music1 extends Thread {
+		private Player player;
+		private boolean isLoop;
+		private File file;
+		private FileInputStream fis;
+		private BufferedInputStream bis;
+		
+		public Music1(String name,boolean isLoop) {
+			try {
+				this.isLoop=isLoop;
+				file=new File(Main.class.getResource("../music/intromusic.mp3").toURI());
+				fis=new FileInputStream(file);
+				bis=new BufferedInputStream(fis);
+				player=new Player(bis);
+			} catch(Exception e) {
+				System.out.println(e.getMessage());
+			}
+		}
+		
+		//let know where the music is played
+		public int getTime() {
+			if(player==null) {
+				return 0;
+			}
+			return player.getPosition();
+		}
+		//to sound off
+		public void close() {
+			isLoop=false;
+			player.close();
+			this.interrupt();
+		}
+		
+		@Override
+		public void run() {
+			try {
+				do {
+					player.play();
+					//infinite loop
+					fis=new FileInputStream(file);
+					bis=new BufferedInputStream(fis);
+					player=new Player(bis);
+				} while(isLoop);
+			} catch(Exception e) {
+				System.out.println(e.getMessage());
+			}
+		}
+	}
+
 	class Receiver extends Thread {
 		Socket s;
 		DataInputStream dis;
 		DataOutputStream dos;
-
 		Receiver(Socket s){
 			this.s = s;
 			try{
@@ -316,4 +375,4 @@ public class client extends JFrame implements ActionListener{
 		}
 	}
 	
-}*/
+}

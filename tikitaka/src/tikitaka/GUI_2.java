@@ -4,6 +4,7 @@ import java.awt.Color;
 import java.awt.Cursor;
 import java.awt.Graphics;
 import java.awt.Image;
+import java.awt.TextField;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
@@ -89,9 +90,9 @@ public class GUI_2 extends JFrame {
 	private ImageIcon ac_DownButtonBasicImage = new ImageIcon(Main.class.getResource("../images/ac6.png")); 
 	private JButton ac_DownButton =new JButton(ac_DownButtonBasicImage);
 	private ImageIcon ac_RemoveButtonBasicImage = new ImageIcon(Main.class.getResource("../images/ac5.png")); 
-	private JButton ac_RemoveButton =new JButton(ac_RemoveButtonBasicImage);
-	
+	private JButton ac_RemoveButton =new JButton("remove", ac_RemoveButtonBasicImage);
 	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	
 	
 	//used for location of cursor
 	private int mouseX, mouseY;
@@ -244,7 +245,9 @@ public class GUI_2 extends JFrame {
 								introductionButton.setVisible(false);
 								actionCheck.setVisible(true);
 								missionCheck.setVisible(true);
-								redBlockButton.setVisible(true); orangeBlockButton.setVisible(true); yellowBlockButton.setVisible(true); greenBlockButton.setVisible(true); skyBlockButton.setVisible(true); blueBlockButton.setVisible(true); purpleBlockButton.setVisible(true); pinkBlockButton.setVisible(true); grayBlockButton.setVisible(true);
+								for(int i=0;i<9;i++) { //액션카드 기능 반영하여 다시 블럭 셋팅
+									blocks_set(game, game.block[i].order, i);
+								}
 								p1_mc.setVisible(false);
 								p2_mc.setVisible(false);
 							}
@@ -375,6 +378,22 @@ public class GUI_2 extends JFrame {
 		     }
 		});
 		timer.start();
+		
+		
+		
+		////////////////////////////////////
+		//Click click = new Click();
+		TextField t = new TextField(20);
+		ActionListener listener1 = new ActionListener(){
+			
+			public void actionPerformed(ActionEvent e) {
+				JButton b = (JButton)e.getSource();
+				String msg = t.getText();
+				t.setText(e.getActionCommand());
+			}
+		};
+		ac_RemoveButton.addActionListener(listener1);
+		
 	}//여기까지 GUI_2 생성자
 	
 	//JFrame을 상속받은 GUI 게임에서 가장 먼저 실행되는 METHOD
@@ -589,32 +608,34 @@ public class GUI_2 extends JFrame {
 			ac_RemoveButton.setBounds(625, 400, 184, 286);
 			ac_RemoveButton.setVisible(true);
 			ac_RemoveButton.addMouseListener(new MouseAdapter() {
+				
 				@Override
-				public void mousePressed(MouseEvent e) {
-					//choose a block
+				public void mouseReleased(MouseEvent e) {
 					ac_UpOneButton.setVisible(false); ac_UpTwoButton.setVisible(false); 
 					ac_UpThreeButton.setVisible(false); ac_DownButton.setVisible(false); ac_RemoveButton.setVisible(false);
 					background=new ImageIcon(Main.class.getResource("../images/mainBackground.png")).getImage();
 					backButton.setVisible(false); //뒤로가기 버튼 없애기
 					//액션카드 버튼들 안보이게끔
 					//애는 블럭 선택할 필요 없음. 무조건 마지막 블럭 버리기
+					System.out.println("before function");
 					game.current_player.action_card.remove.function(game);
 					for(int o = 0; o<9; o++) { //9개의 색 블럭 확인
 						for(int j = 1; j<=game.num_block;j++) { //남은 갯수 만큼의 등수 확인
 							if(game.block[o].exist) {//이 블럭 살아 있니
 								if(game.block[o].order == j) {
-									System.out.println("make block["+o+"] ("+j+")");
 								}}}}
+					System.out.println("start visible");
 					for(int i=0;i<9;i++) { //액션카드 기능 반영하여 다시 블럭 셋팅
 						blocks_set(game, game.block[i].order, i);
 					}
+					System.out.println("end visible");
 					actionCheck.setVisible(true);//다시 액션카드 open버튼 on
 					missionCheck.setVisible(true);
 				}
 			});
 			add(ac_RemoveButton);
 		}
-
+		
 		
 		//유진: 액션카드 선택 후 남아있는 블럭들 중에서 선택할 수 있도록 블럭을 버튼으로 만들기
 		//남아있는 블럭인지 확인 후 버튼 생성

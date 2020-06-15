@@ -3,13 +3,13 @@ package tikitaka;
 import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
-/*
+
 public class login extends JFrame implements ActionListener {
 	JPanel panel_id, panel_ip, panel_button;
 	JLabel label_id, label_ip, pallete, eraser;
 	JButton btn_login, btn_exit;
 	JTextField txt_id, txt_ip;
-	
+	public static int num=0;
 	public static String ip, id;
 	
 	void init() {
@@ -122,12 +122,9 @@ public class login extends JFrame implements ActionListener {
 					txt_id.setEnabled(false);
 					txt_ip.setEnabled(false);
 					setVisible(false);
-					
-					//set game
-					//new GUI();
-					
+					num = 1;
+				
 					client client = new client();
-					
 				}else{
 					JOptionPane.showMessageDialog(null, "Correct your IP Address ", "ERROR!", JOptionPane.WARNING_MESSAGE);
 				}
@@ -136,5 +133,8 @@ public class login extends JFrame implements ActionListener {
 			System.exit(0);
 		}
 	}
-	
-}*/
+	public static void main(String[] args){
+		login login = new login();
+		login.init();
+	}
+}
