@@ -79,9 +79,9 @@ class Game{
 			game.current_player = game.player1;
 			System.out.println("nextTrun : player2 -> player1");
 		}
-		
 	} 
 
+	
 	void gameOver() {
 		//2명의 player가 카드를 모두 쓰는 순간 종료
 		if(player1.action_card.num_card == 0 & player2.action_card.num_card == 0)

@@ -501,6 +501,7 @@ public class GUI_2 extends JFrame {
 	//유진: current_player의 남은 카드들 버튼으로 보여주기
 		void chooseCard(Game game) {
 			//유진: 각 조건문은 current_player의 카드가 남아있으면 해당 카드 버튼이 뜨도록 하였음
+			System.out.println("Player : " + game.current_player.id);
 			if(game.current_player.action_card.upone.num_thiscard>0) 
 				ac_UpOneButton(game); //유진: 해당 카드 버튼 띄우기
 			
@@ -568,7 +569,6 @@ public class GUI_2 extends JFrame {
 				public void mousePressed(MouseEvent e) {				
 					//choose a block
 					background=new ImageIcon(Main.class.getResource("../images/mainBackground.png")).getImage();
-					boolean flag= false;
 					chooseBlock(game, "down"); //현재 상황에 맞춰 남은 블럭 버튼들 보여주기 
 					game.current_player.action_card.down.function(game);//함수 내에서 해당 카드 기능 실행하기
 				}
